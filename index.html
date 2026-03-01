@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -298,7 +299,7 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .nav-links { 
+    .nav-links {
       display: flex; align-items: center; gap: 4px; 
     }
     .nav-links > a {
@@ -625,11 +626,21 @@
     .footer-privacy { font-size: 0.75rem; color: var(--text-muted); }
 
     /* ===== MOBILE RESPONSIVE ===== */
-    @media (max-width: 768px) {
+    @media only screen and (max-width: 768px) {
+      /* Navbar */
+      .nav-brand {
+        font-size: 1rem !important;
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
       .nav-links {
         display: none; position: fixed; top: 64px; left: 0; right: 0;
         background: var(--bg-secondary); border-bottom: 1px solid var(--border);
         flex-direction: column; padding: 16px; gap: 4px;
+        max-height: calc(100vh - 64px);
+        overflow-y: auto;
       }
       .nav-links.open { display: flex; }
       .nav-toggle { display: block; }
@@ -643,12 +654,240 @@
         background: var(--bg-tertiary);
         border-radius: 8px;
         margin-top: 4px;
+        min-width: 100%;
       }
-      .stats-bar { gap: 24px; }
-      .hero { padding: 120px 16px 40px; }
-      .section { padding: 40px 16px; }
-      .tools-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
-      .tool-item { padding: 14px 12px; }
+      
+      /* Hero */
+      .hero { 
+        padding: 100px 16px 40px; 
+        min-height: auto;
+      }
+      .hero h1 {
+        font-size: 1.8rem !important;
+        line-height: 1.3;
+      }
+      .hero-subtitle {
+        font-size: 0.9rem !important;
+        line-height: 1.5;
+      }
+      .hero-badge {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+      }
+      
+      /* Search */
+      .search-wrapper {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 8px;
+      }
+      .search-box {
+        flex-direction: column;
+        padding: 12px;
+        gap: 8px;
+      }
+      .search-box input {
+        width: 100%;
+        font-size: 16px; /* Prevents iOS zoom */
+        padding: 12px 16px;
+      }
+      .search-box svg {
+        display: none;
+      }
+      
+      /* Section */
+      .section { 
+        padding: 32px 12px; 
+      }
+      .section-header h2 {
+        font-size: 1.4rem;
+      }
+      
+      /* Tools Grid */
+      .tools-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 8px;
+        padding: 0 8px;
+      }
+      .tool-item { 
+        padding: 12px 8px;
+        font-size: 0.8rem;
+        min-height: 60px;
+      }
+      .tool-dot {
+        width: 24px;
+        height: 24px;
+        margin-right: 6px;
+      }
+      
+      /* Category Cards */
+      .categories-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 0 8px;
+      }
+      .category-card {
+        padding: 20px;
+        min-height: 80px;
+        grid-column: span 1 !important;
+      }
+      .category-card h3 {
+        font-size: 1rem;
+      }
+      .category-card p {
+        font-size: 0.8rem;
+      }
+      
+      /* Stats */
+      .stats-bar {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+      }
+      .stat-item {
+        min-width: 45%;
+        text-align: center;
+      }
+      .stat-value {
+        font-size: 1.4rem;
+      }
+      
+      /* Footer */
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+      }
+      .footer-bottom {
+        text-align: center;
+      }
+      
+      /* Filter buttons */
+      .filter-buttons {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 0 8px;
+      }
+      .filter-btn {
+        padding: 10px 14px;
+        font-size: 0.8rem;
+        flex: 1 1 auto;
+        min-width: 70px;
+      }
+      
+      /* About section */
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .feature-card {
+        padding: 16px;
+      }
+      
+      /* Floating buttons */
+      .floating-buttons {
+        bottom: 16px;
+        right: 16px;
+      }
+      .back-to-top, .share-btn {
+        width: 44px;
+        height: 44px;
+      }
+      
+      /* Share section */
+      .share-section {
+        padding: 20px;
+      }
+      .share-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      /* Prevent double-tap zoom */
+      a, button, .btn, .tool-card {
+        touch-action: manipulation;
+      }
+    }
+    
+    /* Very small screens */
+    @media (max-width: 400px) {
+      .hero h1 {
+        font-size: 1.5rem !important;
+      }
+      .tools-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+      }
+      .tool-item {
+        font-size: 0.75rem;
+        padding: 10px 6px;
+      }
+    }
+    
+    /* Landscape mobile */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .hero {
+        padding: 80px 16px 30px;
+      }
+      .hero h1 {
+        font-size: 1.5rem !important;
+      }
+    }
+    
+    /* Desktop specific - ensure proper display on large screens */
+    @media only screen and (min-width: 769px) {
+      /* Navbar */
+      .nav-brand {
+        font-size: 1.2rem;
+        max-width: none;
+      }
+      
+      /* Hero - restore desktop size */
+      .hero {
+        padding: 140px 24px 60px;
+        min-height: 60vh;
+      }
+      .hero h1 {
+        font-size: 3rem !important;
+        line-height: 1.2;
+      }
+      .hero-subtitle {
+        font-size: 1.1rem !important;
+        max-width: 700px;
+      }
+      
+      /* Search */
+      .search-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      
+      /* Tools grid - restore desktop layout */
+      .tools-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 14px;
+        padding: 0;
+      }
+      .tool-item {
+        padding: 18px 16px;
+        font-size: 0.95rem;
+      }
+      
+      /* Category grid */
+      .category-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+      .category-card {
+        padding: 30px;
+        min-height: 140px;
+      }
+      
+      /* Stats */
+      .stats-bar {
+        justify-content: center;
+        gap: 60px;
+      }
     }
 
     /* ===== SCROLLBAR ===== */
@@ -809,6 +1048,7 @@
       <a href="about.html">About</a>
       <a href="privacy.html">Privacy</a>
       <a href="terms.html">Terms</a>
+      <a href="faq.html">FAQ</a>
       <a href="contact.html">Contact</a>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
@@ -1107,6 +1347,7 @@
       <a href="pdf-tools.html">PDF Tools</a>
       <a href="pdf-editor.html">PDF Editor</a>
       <a href="about.html">About</a>
+      <a href="faq.html">FAQ</a>
       <a href="contact.html">Contact</a>
       <a href="settings.html">Settings</a>
       <a href="privacy.html">Privacy</a>
