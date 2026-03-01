@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Tools - Converter, Compress, GIF Maker, Trimmer | All-in-One Online Document Toolkit</title>
+  <meta name="description" content="Free online video tools: converter, compressor, GIF maker, trimmer, speed changer. 100% free - all processing in browser.">
+  <meta name="keywords" content="video converter, video compressor, GIF maker, trim video, speed video, free video tools, online video editor">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="video-tools.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border: #334155;
+      --accent: #ec4899;
+      --success: #10b981;
+    }
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border: #e2e8f0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand {
+      font-size: 1.2rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #f472b6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 8px; }
+    .nav-links a {
+      padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text-primary); background: var(--bg-tertiary); }
+
+    .container {
+      max-width: 900px; margin: 90px auto 40px; padding: 0 24px;
+    }
+    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+    .subtitle { color: var(--text-secondary); margin-bottom: 32px; }
+
+    .tool-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 32px;
+      margin-bottom: 24px;
+    }
+    .tool-card h2 {
+      font-size: 1.3rem; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .tool-card h2 span { font-size: 1.5rem; }
+
+    .upload-zone {
+      border: 2px dashed var(--border); border-radius: 16px;
+      padding: 48px; text-align: center; cursor: pointer;
+      transition: all 0.3s;
+    }
+    .upload-zone:hover { border-color: var(--accent); background: rgba(236, 72, 153, 0.05); }
+    .upload-zone svg { width: 48px; height: 48px; color: var(--accent); margin-bottom: 16px; }
+    .upload-zone p { color: var(--text-secondary); margin: 0; }
+    .upload-zone .hint { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; }
+
+    .player-area {
+      margin-top: 24px;
+      display: none;
+    }
+    .player-area.active { display: block; }
+    
+    video { width: 100%; max-height: 300px; border-radius: 12px; background: #000; }
+
+    .controls {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .control-btn {
+      padding: 12px 24px; border: 1px solid var(--border); border-radius: 10px;
+      background: var(--bg-tertiary); color: var(--text-primary);
+      font-size: 0.9rem; font-weight: 500; cursor: pointer;
+      font-family: inherit; transition: all 0.2s;
+    }
+    .control-btn:hover { border-color: var(--accent); }
+    .control-btn.primary {
+      background: var(--accent); color: white; border-color: var(--accent);
+    }
+    .control-btn.primary:hover { opacity: 0.9; }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary); }
+    .form-group input, .form-group select {
+      width: 100%; padding: 12px 16px;
+      border: 1px solid var(--border); border-radius: 10px;
+      background: var(--bg-tertiary); color: var(--text-primary);
+      font-size: 1rem; font-family: inherit;
+    }
+
+    .slider-wrap { margin: 16px 0; }
+    .slider-wrap label { display: block; font-size: 0.9rem; margin-bottom: 8px; }
+    .slider-wrap input[type="range"] {
+      width: 100%; height: 8px; border-radius: 4px;
+      background: var(--bg-tertiary); cursor: pointer;
+    }
+    .slider-value { text-align: center; font-weight: 600; margin-top: 8px; }
+
+    .preset-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px;
+      margin-bottom: 16px;
+    }
+    .preset-btn {
+      padding: 10px; border: 1px solid var(--border); border-radius: 8px;
+      background: var(--bg-tertiary); color: var(--text-secondary);
+      font-size: 0.8rem; cursor: pointer; transition: all 0.2s;
+      font-family: inherit;
+    }
+    .preset-btn:hover, .preset-btn.active {
+      border-color: var(--accent); color: var(--text-primary);
+    }
+
+    .file-info {
+      padding: 12px 16px; background: var(--bg-tertiary); border-radius: 10px;
+      margin-bottom: 16px; font-size: 0.9rem;
+    }
+
+    input[type="file"] { display: none; }
+
+    .note {
+      margin-top: 16px; padding: 12px;
+      background: rgba(236, 72, 153, 0.1);
+      border-radius: 8px; font-size: 0.85rem; color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">All-in-One Online Document Toolkit</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="video-tools.html" class="active">Video Tools</a>
+    <a href="audio-tools.html">Audio Tools</a>
+    <a href="popular-tools.html">Popular</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>🎬 Free Video Tools</h1>
+  <p class="subtitle">Convert, compress, trim and edit videos - all in your browser.</p>
+  
+  <div style="background: #fef3c7; color: #92400e; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem;">
+    ⚠️ <strong>Note:</strong> Video processing happens in your browser. For best results, use smaller video files (under 50MB) and Chrome/Edge browser. Output format is WebM.
+  </div>
+
+  <!-- Video Converter -->
+  <div class="tool-card">
+    <h2><span>🔄</span> Video Converter</h2>
+    <div class="upload-zone" onclick="document.getElementById('convertInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      <p>Click to upload video file</p>
+      <p class="hint">MP4, WebM, AVI, MOV supported</p>
+      <input type="file" id="convertInput" accept="video/*" onchange="loadVideo(this, 'convert')">
+    </div>
+    
+    <div class="player-area" id="convertPlayer">
+      <div class="file-info" id="convertInfo"></div>
+      <video id="convertVideo" controls></video>
+      
+      <div class="form-group" style="margin-top: 20px;">
+        <label>Convert to</label>
+        <select id="convertFormat">
+          <option value="mp4">MP4</option>
+          <option value="webm">WebM</option>
+          <option value="gif">GIF</option>
+        </select>
+      </div>
+      
+      <button class="control-btn primary" onclick="convertVideo()">Convert & Download</button>
+      <div class="note">
+        💡 Video conversion in browser has limitations. For best results, we recommend using desktop software for heavy conversions.
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Compressor -->
+  <div class="tool-card">
+    <h2><span>📦</span> Video Compressor</h2>
+    <div class="upload-zone" onclick="document.getElementById('compressInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 14h6v6M20 10h-6V4M4 10l5-5M20 14l-5 5"/>
+      </svg>
+      <p>Click to upload video to compress</p>
+      <input type="file" id="compressInput" accept="video/*" onchange="loadVideo(this, 'compress')">
+    </div>
+    
+    <div class="player-area" id="compressPlayer">
+      <video id="compressVideo" controls></video>
+      
+      <div class="slider-wrap">
+        <label>Compression Quality</label>
+        <input type="range" id="compressLevel" min="10" max="100" value="70">
+        <div class="slider-value" id="compressVal">70%</div>
+      </div>
+      
+      <button class="control-btn primary" onclick="compressVideo()">Compress Video</button>
+    </div>
+  </div>
+
+  <!-- GIF Maker -->
+  <div class="tool-card">
+    <h2><span>🎞</span> GIF Maker</h2>
+    <div class="upload-zone" onclick="document.getElementById('gifInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
+        <line x1="7" y1="2" x2="7" y2="22"/>
+        <line x1="17" y1="2" x2="17" y2="22"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <line x1="2" y1="7" x2="7" y2="7"/>
+        <line x1="2" y1="17" x2="7" y2="17"/>
+        <line x1="17" y1="17" x2="22" y2="17"/>
+        <line x1="17" y1="7" x2="22" y2="7"/>
+      </svg>
+      <p>Click to upload video to convert to GIF</p>
+      <input type="file" id="gifInput" accept="video/*" onchange="loadVideo(this, 'gif')">
+    </div>
+    
+    <div class="player-area" id="gifPlayer">
+      <video id="gifVideo" controls></video>
+      
+      <div class="form-group">
+        <label>GIF Width (pixels)</label>
+        <select id="gifWidth">
+          <option value="320">Small (320px)</option>
+          <option value="480" selected>Medium (480px)</option>
+          <option value="640">Large (640px)</option>
+        </select>
+      </div>
+      
+      <div class="slider-wrap">
+        <label>Duration (seconds)</label>
+        <input type="range" id="gifDuration" min="1" max="10" value="3">
+        <div class="slider-value" id="gifDurVal">3 seconds</div>
+      </div>
+      
+      <button class="control-btn primary" onclick="createGif()">Create GIF</button>
+    </div>
+  </div>
+
+  <!-- Video Trimmer -->
+  <div class="tool-card">
+    <h2><span>✂️</span> Video Trimmer</h2>
+    <div class="upload-zone" onclick="document.getElementById('trimInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <p>Click to upload video to trim</p>
+      <input type="file" id="trimInput" accept="video/*" onchange="loadVideo(this, 'trim')">
+    </div>
+    
+    <div class="player-area" id="trimPlayer">
+      <video id="trimVideo" controls></video>
+      
+      <div class="slider-wrap">
+        <label>Start Time (seconds)</label>
+        <input type="range" id="trimStart" min="0" max="30" value="0" oninput="updateTrimLabel()">
+        <div class="slider-value" id="trimStartVal">0s</div>
+      </div>
+      
+      <div class="slider-wrap">
+        <label>End Time (seconds)</label>
+        <input type="range" id="trimEnd" min="0" max="30" value="10" oninput="updateTrimLabel()">
+        <div class="slider-value" id="trimEndVal">10s</div>
+      </div>
+      
+      <button class="control-btn primary" onclick="trimVideo()">Trim Video</button>
+    </div>
+  </div>
+
+  <!-- Video Speed -->
+  <div class="tool-card">
+    <h2><span>⚡</span> Video Speed Changer</h2>
+    <div class="upload-zone" onclick="document.getElementById('speedInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+      <p>Click to upload video</p>
+      <input type="file" id="speedInput" accept="video/*" onchange="loadVideo(this, 'speed')">
+    </div>
+    
+    <div class="player-area" id="speedPlayer">
+      <video id="speedVideo" controls></video>
+      
+      <div class="preset-grid">
+        <button class="preset-btn" onclick="setSpeed(0.5)">0.5x</button>
+        <button class="preset-btn active" onclick="setSpeed(1)">1x</button>
+        <button class="preset-btn" onclick="setSpeed(1.5)">1.5x</button>
+        <button class="preset-btn" onclick="setSpeed(2)">2x</button>
+      </div>
+      
+      <button class="control-btn primary" onclick="downloadSpeedVideo()">Preview Speed</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentVideoData = null;
+  let currentType = '';
+
+  function loadVideo(input, type) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    currentVideoData = file;
+    currentType = type;
+    
+    const url = URL.createObjectURL(file);
+    const info = document.getElementById(type + 'Info');
+    if (info) {
+      info.innerHTML = `<strong>${file.name}</strong> - ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+    }
+    
+    const video = document.getElementById(type + 'Video');
+    if (video) {
+      video.src = url;
+      document.getElementById(type + 'Player').classList.add('active');
+      
+      video.onloadedmetadata = function() {
+        const duration = video.duration;
+        const endSlider = document.getElementById('trimEnd');
+        if (endSlider) {
+          endSlider.max = Math.floor(duration);
+          endSlider.value = Math.min(Math.floor(duration), 10);
+          updateTrimLabel();
+        }
+      };
+    }
+  }
+
+  function updateTrimLabel() {
+    document.getElementById('trimStartVal').textContent = document.getElementById('trimStart').value + 's';
+    document.getElementById('trimEndVal').textContent = document.getElementById('trimEnd').value + 's';
+  }
+
+  function setSpeed(val) {
+    document.querySelectorAll('#speedPlayer .preset-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    const video = document.getElementById('speedVideo');
+    if (video) {
+      video.playbackRate = val;
+    }
+  }
+
+  document.getElementById('compressLevel').addEventListener('input', function() {
+    document.getElementById('compressVal').textContent = this.value + '%';
+  });
+
+  document.getElementById('gifDuration').addEventListener('input', function() {
+    document.getElementById('gifDurVal').textContent = this.value + ' seconds';
+  });
+
+  async function convertVideo() {
+    if (!currentVideoData) {
+      alert('Please upload a video first');
+      return;
+    }
+    
+    const format = document.getElementById('convertFormat').value;
+    const btn = event.target;
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+    
+    try {
+      const video = document.getElementById('convertVideo');
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      
+      const stream = canvas.captureStream(30);
+      let mimeType = 'video/webm';
+      
+      if (!MediaRecorder.isTypeSupported(mimeType)) {
+        mimeType = 'video/webm';
+      }
+      
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: mimeType,
+        videoBitsPerSecond: 5000000
+      });
+      
+      const chunks = [];
+      mediaRecorder.ondataavailable = e => chunks.push(e.data);
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `converted.webm`;
+        a.click();
+        btn.textContent = 'Convert & Download';
+        btn.disabled = false;
+        if (typeof onDownloadComplete === 'function') onDownloadComplete('video');
+      };
+      
+      mediaRecorder.start();
+      video.currentTime = 0;
+      video.play();
+      
+      const drawFrame = () => {
+        if (video.paused || video.ended) {
+          mediaRecorder.stop();
+          video.pause();
+          return;
+        }
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        requestAnimationFrame(drawFrame);
+      };
+      drawFrame();
+      
+      video.onended = () => {
+        mediaRecorder.stop();
+        video.pause();
+      };
+    } catch (err) {
+      alert('Video conversion failed: ' + err.message + '\n\nNote: Browser-based video processing has limitations. For best results, try using a smaller video file or different browser.');
+      btn.textContent = 'Convert & Download';
+      btn.disabled = false;
+    }
+  }
+
+  async function compressVideo() {
+    if (!currentVideoData) {
+      alert('Please upload a video first');
+      return;
+    }
+    
+    const btn = event.target;
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+    
+    try {
+      const quality = parseInt(document.getElementById('compressLevel').value) / 100;
+      const video = document.getElementById('compressVideo');
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.floor(video.videoWidth * quality);
+      canvas.height = Math.floor(video.videoHeight * quality);
+      const ctx = canvas.getContext('2d');
+      
+      const stream = canvas.captureStream(30);
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'video/webm',
+        videoBitsPerSecond: 1000000 * quality
+      });
+      
+      const chunks = [];
+      mediaRecorder.ondataavailable = e => chunks.push(e.data);
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'compressed.webm';
+        a.click();
+        btn.textContent = 'Compress Video';
+        btn.disabled = false;
+        if (typeof onDownloadComplete === 'function') onDownloadComplete('video');
+      };
+      
+      mediaRecorder.start();
+      video.currentTime = 0;
+      video.play();
+      
+      const drawFrame = () => {
+        if (video.paused || video.ended) {
+          mediaRecorder.stop();
+          video.pause();
+          return;
+        }
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        requestAnimationFrame(drawFrame);
+      };
+      drawFrame();
+      
+      video.onended = () => mediaRecorder.stop();
+    } catch (err) {
+      alert('Video compression failed: ' + err.message);
+      btn.textContent = 'Compress Video';
+      btn.disabled = false;
+    }
+  }
+
+  async function createGif() {
+    if (!currentVideoData) {
+      alert('Please upload a video first');
+      return;
+    }
+    
+    const btn = event.target;
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+    
+    try {
+    const width = parseInt(document.getElementById('gifWidth').value);
+    const duration = parseInt(document.getElementById('gifDuration').value);
+    const video = document.getElementById('gifVideo');
+    
+    const canvas = document.createElement('canvas');
+    const ratio = video.videoHeight / video.videoWidth;
+    canvas.width = width;
+    canvas.height = Math.floor(width * ratio);
+    const ctx = canvas.getContext('2d');
+    
+    const frames = [];
+    const fps = 10;
+    const totalFrames = duration * fps;
+    const interval = 1000 / fps;
+    
+    video.currentTime = 0;
+    
+    const captureFrame = () => {
+      return new Promise(resolve => {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        frames.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+        resolve();
+      });
+    };
+    
+    for (let i = 0; i < totalFrames; i++) {
+      await captureFrame();
+      video.currentTime = (i + 1) / fps;
+      await new Promise(r => { video.onseeked = r; });
+    }
+    
+    const gif = createGifEncoder(frames, canvas.width, canvas.height);
+    const url = URL.createObjectURL(gif);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'animated.gif';
+    a.click();
+    
+    btn.textContent = 'Create GIF';
+    btn.disabled = false;
+  }
+
+  function createGifEncoder(frames, width, height) {
+    const palette = [];
+    const delay = 10;
+    
+    let data = [];
+    const addByte = b => data.push(b);
+    const addString = s => { for (let i = 0; i < s.length; i++) addByte(s.charCodeAt(i)); };
+    
+    addString('GIF89a');
+    addByte(width & 0xFF); addByte(width >> 8);
+    addByte(height & 0xFF); addByte(height >> 8);
+    addByte(0xF7);
+    addByte(0);
+    addByte(0);
+    
+    const indexedPixels = [];
+    for (let i = 0; i < frames.length; i++) {
+      const frame = frames[i];
+      const pixels = [];
+      for (let j = 0; j < frame.data.length; j += 4) {
+        const r = frame.data[j];
+        const g = frame.data[j + 1];
+        const b = frame.data[j + 2];
+        pixels.push([r, g, b]);
+      }
+      indexedPixels.push(pixels);
+    }
+    
+    const colorTable = new Uint8Array(256 * 3);
+    for (let i = 0; i < 256; i++) {
+      colorTable[i * 3] = i;
+      colorTable[i * 3 + 1] = i;
+      colorTable[i * 3 + 2] = i;
+    }
+    for (let i = 0; i < 256 * 3; i++) addByte(colorTable[i]);
+    
+    addByte(0);
+    addByte(0);
+    addByte(0);
+    addByte(0x21);
+    addByte(0xFF);
+    addByte(11);
+    addString('NETSCAPE2.0');
+    addByte(3);
+    addByte(1);
+    addByte(0);
+    addByte(0);
+    
+    for (let f = 0; f < indexedPixels.length; f++) {
+      addByte(0x21);
+      addByte(0xF9);
+      addByte(4);
+      addByte(0);
+      addByte(delay & 0xFF);
+      addByte(delay >> 8);
+      addByte(0);
+      addByte(0);
+      
+      addByte(0x2C);
+      addByte(0); addByte(0);
+      addByte(0); addByte(0);
+      addByte(width & 0xFF); addByte(width >> 8);
+      addByte(height & 0xFF); addByte(height >> 8);
+      addByte(0);
+      
+      const pixels = indexedPixels[f];
+      const indexed = new Uint8Array(pixels.length);
+      for (let i = 0; i < pixels.length; i++) {
+        indexed[i] = Math.floor((pixels[i][0] + pixels[i][1] + pixels[i][2]) / 3);
+      }
+      
+      const lzw = lzwEncode(indexed, 8);
+      addByte(8);
+      addByte(lzw.length);
+      for (let i = 0; i < lzw.length; i++) addByte(lzw[i]);
+      addByte(0);
+    }
+    
+    addByte(0x3B);
+    
+    return new Blob([new Uint8Array(data)], { type: 'image/gif' });
+  }
+
+  function lzwEncode(pixels, minCodeSize) {
+    const clearCode = 1 << minCodeSize;
+    const eoiCode = clearCode + 1;
+    let codeSize = minCodeSize + 1;
+    let nextCode = eoiCode + 1;
+    
+    const dictionary = new Map();
+    for (let i = 0; i < clearCode; i++) {
+      dictionary.set(String(i), i);
+    }
+    
+    const output = [];
+    let bits = 0;
+    let bitCount = 0;
+    
+    const write = code => {
+      bits |= code << bitCount;
+      bitCount += codeSize;
+      while (bitCount >= 8) {
+        output.push(bits & 0xFF);
+        bits >>= 8;
+        bitCount -= 8;
+      }
+    };
+    
+    write(clearCode);
+    
+    let current = '';
+    for (let i = 0; i < pixels.length; i++) {
+      const pixel = String(pixels[i]);
+      const combined = current + ',' + pixel;
+      
+      if (dictionary.has(combined)) {
+        current = combined;
+      } else {
+        write(dictionary.get(current));
+        
+        if (nextCode < 4096) {
+          dictionary.set(combined, nextCode++);
+          if (nextCode > (1 << codeSize) && codeSize < 12) {
+            codeSize++;
+          }
+        }
+        
+        current = pixel;
+      }
+    }
+    
+    if (current) {
+      write(dictionary.get(current));
+    }
+    write(eoiCode);
+    
+    if (bitCount > 0) {
+      output.push(bits);
+    }
+    
+    return output;
+  }
+
+  async function trimVideo() {
+    if (!currentVideoData) {
+      alert('Please upload a video first');
+      return;
+    }
+    
+    const btn = event.target;
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+    
+    try {
+      const startTime = parseFloat(document.getElementById('trimStart').value);
+      const endTime = parseFloat(document.getElementById('trimEnd').value);
+      const video = document.getElementById('trimVideo');
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      
+      const stream = canvas.captureStream(30);
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'video/webm',
+        videoBitsPerSecond: 5000000
+      });
+      
+      const chunks = [];
+      mediaRecorder.ondataavailable = e => chunks.push(e.data);
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'trimmed-video.webm';
+        a.click();
+        btn.textContent = 'Trim Video';
+        btn.disabled = false;
+      };
+      
+      video.currentTime = startTime;
+      await new Promise(r => { video.onseeked = r; });
+      
+      mediaRecorder.start();
+      video.play();
+      
+      const drawFrame = () => {
+        if (video.currentTime >= endTime || video.ended) {
+          mediaRecorder.stop();
+          video.pause();
+          return;
+        }
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        requestAnimationFrame(drawFrame);
+      };
+      drawFrame();
+    } catch (err) {
+      alert('Video trimming failed: ' + err.message);
+      btn.textContent = 'Trim Video';
+      btn.disabled = false;
+    }
+  }
+  }
+
+  function downloadSpeedVideo() {
+    const video = document.getElementById('speedVideo');
+    if (video) {
+      const activeBtn = document.querySelector('#speedPlayer .preset-btn.active');
+      const speed = activeBtn ? parseFloat(activeBtn.textContent) : 1;
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      
+      const stream = canvas.captureStream(30);
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'video/webm'
+      });
+      
+      const chunks = [];
+      mediaRecorder.ondataavailable = e => chunks.push(e.data);
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'speed-adjusted.webm';
+        a.click();
+      };
+      
+      mediaRecorder.start();
+      video.currentTime = 0;
+      video.playbackRate = speed;
+      video.play();
+      
+      const drawFrame = () => {
+        if (video.paused || video.ended) {
+          mediaRecorder.stop();
+          video.pause();
+          return;
+        }
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        requestAnimationFrame(drawFrame);
+      };
+      drawFrame();
+      
+      video.onended = () => mediaRecorder.stop();
+    }
+  }
+
+  // Theme
+  const pageThemes = JSON.parse(localStorage.getItem('eds-page-themes') || '{}');
+  const globalTheme = localStorage.getItem('eds-theme') || 'dark';
+  const pageTheme = pageThemes['video-tools.html'];
+  document.documentElement.setAttribute('data-theme', pageTheme && pageTheme !== 'default' ? pageTheme : globalTheme);
+</script>
+  <script src="version-check.js"></script>
+  <script src="simple-affiliate.js"></script>
+  <script src="affiliate-manager.js"></script>
+
+</body>
+</html>

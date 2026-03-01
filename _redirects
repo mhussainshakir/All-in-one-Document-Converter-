@@ -1,0 +1,12 @@
+# Netlify Redirects
+# Improve SEO and handle routing
+
+# Custom 404 page
+/404.html /404.html 200
+
+# Redirects for consistency
+/index.html /
+/index.htm /
+
+# SPA Fallback - serve index.html for all routes (optional, remove if causing issues)
+/*    /index.html   200

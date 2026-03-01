@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Admin - Elite Document Suite</title>
+  
+  <!-- Firebase SDK (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  
+  <script>
+    // Firebase Configuration - NEW PROJECT
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5hqbHcuPuev9MwmJn0ZpdYppxyljCN-E",
+      authDomain: "elite-docs-admin-28310.firebaseapp.com",
+      projectId: "elite-docs-admin-28310",
+      storageBucket: "elite-docs-admin-28310.firebasestorage.app",
+      messagingSenderId: "605421627453",
+      appId: "1:605421627453:web:f4a3c58f47baf3e6f7a254"
+    };
+
+    // Auto-initialize Firebase
+    let app, db, auth;
+    try {
+      app = firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore(app);
+      auth = firebase.auth(app);
+      console.log('Firebase initialized');
+    } catch(e) {
+      console.log('Firebase init error:', e);
+    }
+  </script>
+  
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border: #334155;
+      --accent: #6366f1;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-primary); color: var(--text-primary);
+      padding: 40px 20px; line-height: 1.6;
+      min-height: 100vh;
+    }
+    .container { max-width: 800px; margin: 0 auto; }
+    h1 { font-size: 1.8rem; margin-bottom: 8px; }
+    .subtitle { color: var(--text-secondary); margin-bottom: 32px; }
+    
+    .section {
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px; margin-bottom: 24px;
+    }
+    .section h2 { font-size: 1.1rem; margin-bottom: 16px; color: var(--accent); }
+    
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; margin-bottom: 6px; font-size: 0.9rem; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 14px; border: 1px solid var(--border);
+      border-radius: 10px; background: var(--bg-tertiary); color: var(--text-primary);
+      font-size: 1rem;
+    }
+    .form-group textarea { min-height: 100px; resize: vertical; }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      outline: none; border-color: var(--accent);
+    }
+    
+    .btn {
+      padding: 14px 24px; border: none; border-radius: 10px;
+      background: var(--accent); color: white; font-size: 1rem;
+      font-weight: 600; cursor: pointer; width: 100%;
+      transition: all 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn.secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+    
+    .config-box {
+      background: var(--bg-tertiary); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px; margin-bottom: 24px;
+    }
+    .config-box h3 { font-size: 1rem; margin-bottom: 12px; }
+    .config-box code {
+      display: block; background: #000; color: #0f0;
+      padding: 16px; border-radius: 8px; overflow-x: auto;
+      font-size: 0.85rem;
+    }
+    
+    .status { padding: 14px; border-radius: 10px; margin-top: 16px; text-align: center; }
+    .status.success { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+    .status.error { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+    .status.info { background: rgba(99, 102, 241, 0.1); color: var(--accent); }
+    
+    .data-preview {
+      background: var(--bg-tertiary); border-radius: 10px; padding: 16px;
+      max-height: 300px; overflow-y: auto;
+    }
+    .data-preview pre {
+      font-size: 0.8rem; white-space: pre-wrap;
+    }
+    
+    .warning {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid #f59e0b;
+      border-radius: 10px; padding: 16px; margin-bottom: 24px;
+    }
+    .warning h3 { color: #f59e0b; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🔥 Firebase Admin Setup</h1>
+  <p class="subtitle">Configure Firebase for Elite Document Suite</p>
+  
+  <div class="warning">
+    <h3>⚠️ Setup Instructions</h3>
+    <ol style="margin-left: 20px; color: var(--text-secondary);">
+      <li>Create a project at <a href="https://console.firebase.google.com" target="_blank" style="color: var(--accent);">firebase.google.com</a></li>
+      <li>Enable Firestore Database</li>
+      <li>Enable Authentication (Email/Password)</li>
+      <li>Copy your Firebase config below</li>
+      <li>Deploy Firestore rules</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>1. Firebase Configuration</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 16px;">
+      Copy this config from your Firebase project console and update below:
+    </p>
+    <div class="form-group">
+      <label>API Key</label>
+      <input type="text" id="apiKey" placeholder="AIzaSy..." value="AIzaSyDuFvyM4H-tVcigxUMEgnEHfO0kKwYWoKY">
+    </div>
+    <div class="form-group">
+      <label>Project ID</label>
+      <input type="text" id="projectId" placeholder="my-project-id" value="elite-docs-admin-28310">
+      <input type="text" id="authDomain" placeholder="my-project.firebaseapp.com" value="elite-docs-admin-28310.firebaseapp.com">
+      <input type="text" id="storageBucket" placeholder="my-project.appspot.com" value="elite-docs-admin-28310.firebasestorage.app">
+    </div>
+    <div class="form-group">
+      <label>Messaging Sender ID</label>
+      <input type="text" id="messagingSenderId" placeholder="123456789" value="497777330950">
+    </div>
+    <div class="form-group">
+      <label>App ID</label>
+      <input type="text" id="appId" placeholder="1:123456789:web:abc123" value="1:497777330950:web:2908235490c209b3f12c87">
+    </div>
+    <button class="btn" onclick="initializeFirebase()">Initialize Firebase</button>
+    <div id="initStatus" class="status" style="display:none;"></div>
+  </div>
+
+  <div class="section">
+    <h2>2. Create Admin User</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 16px;">
+      Register your first admin account:
+    </p>
+    <div class="form-group">
+      <label>Admin Email</label>
+      <input type="email" id="adminEmail" placeholder="admin@example.com">
+    </div>
+    <div class="form-group">
+      <label>Admin Password</label>
+      <input type="password" id="adminPassword" placeholder="Min 6 characters">
+    </div>
+    <button class="btn" onclick="createAdmin()">Create Admin</button>
+    <div id="createStatus" class="status" style="display:none;"></div>
+  </div>
+
+  <div class="section">
+    <h2>3. Deploy Firestore Rules</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 16px;">
+      Copy these rules and deploy from Firebase CLI:
+    </p>
+    <div class="config-box">
+      <h3>firestore.rules</h3>
+      <code>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+    match /affiliate/{affiliateId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+    match /feedback/{feedbackId} {
+      allow read: if request.auth != null;
+      allow create: if request.resource.data.keys().hasAll(['message', 'email']);
+      allow write: if request.auth != null;
+    }
+    match /analytics/{docId} {
+      allow read: if request.auth != null;
+      allow create: if true;
+    }
+    match /admins/{adminId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+  }
+}</code>
+    </div>
+    <button class="btn secondary" onclick="showDeployCommands()">Show Deploy Commands</button>
+    <div id="deployCommands" class="status info" style="display:none; margin-top: 16px;">
+      <code style="color: var(--accent);">
+# Install Firebase CLI<br>
+npm install -g firebase-tools<br><br>
+
+# Login<br>
+firebase login<br><br>
+
+# Deploy rules<br>
+firebase deploy --only firestore:rules
+      </code>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>4. Initialize Default Data</h2>
+    <button class="btn" onclick="initializeData()">Setup Default Settings</button>
+    <div id="dataStatus" class="status" style="display:none;"></div>
+  </div>
+
+  <div class="section">
+    <h2>5. Current Database Data</h2>
+    <button class="btn secondary" onclick="loadData()">Refresh Data</button>
+    <div class="data-preview" id="dataPreview" style="margin-top: 16px;">
+      <pre>No data loaded yet...</pre>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Global Firebase variables
+  let app, db, auth;
+
+  // Auto-initialize Firebase with config from page
+  function initializeFirebase() {
+    // Use config from the form fields
+    const config = {
+      apiKey: document.getElementById('apiKey').value,
+      authDomain: document.getElementById('authDomain').value,
+      projectId: document.getElementById('projectId').value,
+      storageBucket: document.getElementById('storageBucket').value,
+      messagingSenderId: document.getElementById('messagingSenderId').value,
+      appId: document.getElementById('appId').value
+    };
+
+    if (!config.apiKey || !config.projectId) {
+      showStatus('initStatus', 'Please add Firebase config', 'error');
+      return;
+    }
+
+    try {
+      app = firebase.initializeApp(config);
+      db = firebase.firestore(app);
+      auth = firebase.auth(app);
+      
+      // Enable persistence
+      db.enablePersistence({ synchronizeTabs: true }).catch(err => {
+        console.log('Persistence error:', err);
+      });
+      
+      showStatus('initStatus', '✓ Firebase connected! Loading data...', 'success');
+      loadData();
+    } catch (err) {
+      showStatus('initStatus', 'Error: ' + err.message, 'error');
+    }
+  }
+
+  // Auto-initialize on page load
+  window.addEventListener('load', function() {
+    setTimeout(initializeFirebase, 500);
+  });
+
+  async function createAdmin() {
+    const email = document.getElementById('adminEmail').value;
+    const password = document.getElementById('adminPassword').value;
+
+    if (!email || !password) {
+      showStatus('createStatus', 'Please fill all fields', 'error');
+      return;
+    }
+
+    if (password.length < 6) {
+      showStatus('createStatus', 'Password must be at least 6 characters', 'error');
+      return;
+    }
+
+    try {
+      // Create user
+      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+      
+      // Add admin claim
+      await user.getIdTokenResult().then((idTokenResult) => {
+        if (!idTokenResult.claims.admin) {
+          // Custom admin claim - requires Cloud Functions in production
+          console.log('Admin user created:', user.email);
+        }
+      });
+      
+      // Save to admins collection
+      await db.collection('admins').doc(user.uid).set({
+        email: user.email,
+        role: 'admin',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      
+      showStatus('createStatus', '✓ Admin created successfully! UID: ' + user.uid, 'success');
+    } catch (err) {
+      showStatus('createStatus', 'Error: ' + err.message, 'error');
+    }
+  }
+
+  async function initializeData() {
+    if (!db) {
+      showStatus('dataStatus', 'Please initialize Firebase first', 'error');
+      return;
+    }
+
+    try {
+      // Default settings
+      await db.collection('settings').doc('general').set({
+        siteName: 'Elite Document Suite',
+        tagline: 'Free Online PDF, Image & Text Tools',
+        theme: 'dark',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      // Default affiliate (empty)
+      await db.collection('settings').doc('affiliate').set({
+        pdf: '',
+        image: '',
+        business: '',
+        general: '',
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      // Default ads settings
+      await db.collection('settings').doc('ads').set({
+        enabled: false,
+        showBanners: false,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      showStatus('dataStatus', '✓ Default data initialized!', 'success');
+      loadData();
+    } catch (err) {
+      showStatus('dataStatus', 'Error: ' + err.message, 'error');
+    }
+  }
+
+  async function loadData() {
+    if (!db) {
+      document.getElementById('dataPreview').innerHTML = '<pre>Firebase not initialized</pre>';
+      return;
+    }
+
+    try {
+      let output = '';
+
+      // Load settings
+      const settingsSnap = await db.collection('settings').get();
+      output += '=== SETTINGS ===\n';
+      settingsSnap.forEach(doc => {
+        output += `\n[${doc.id}]\n${JSON.stringify(doc.data(), null, 2)}\n`;
+      });
+
+      // Load admins (just count)
+      const adminsSnap = await db.collection('admins').get();
+      output += `\n=== ADMINS (${adminsSnap.size}) ===\n`;
+
+      // Load feedback count
+      const feedbackSnap = await db.collection('feedback').get();
+      output += `\n=== FEEDBACK (${feedbackSnap.size}) ===\n`;
+
+      // Load tool usage
+      const usageSnap = await db.collection('tool_usage').limit(5).get();
+      output += `\n=== RECENT TOOL USAGE ===\n`;
+      usageSnap.forEach(doc => {
+        output += `${JSON.stringify(doc.data(), null, 2)}\n`;
+      });
+
+      document.getElementById('dataPreview').innerHTML = `<pre>${output}</pre>`;
+    } catch (err) {
+      document.getElementById('dataPreview').innerHTML = `<pre style="color: var(--danger);">Error: ${err.message}</pre>`;
+    }
+  }
+
+  function showStatus(elementId, message, type) {
+    const el = document.getElementById(elementId);
+    el.textContent = message;
+    el.className = 'status ' + type;
+    el.style.display = 'block';
+  }
+
+  function showDeployCommands() {
+    document.getElementById('deployCommands').style.display = 'block';
+  }
+
+  // Check if Firebase config is saved
+  const savedConfig = localStorage.getItem('eds-firebase-config');
+  if (savedConfig) {
+    const config = JSON.parse(savedConfig);
+    document.getElementById('apiKey').value = config.apiKey || '';
+    document.getElementById('projectId').value = config.projectId || '';
+    document.getElementById('authDomain').value = config.authDomain || '';
+    document.getElementById('storageBucket').value = config.storageBucket || '';
+    document.getElementById('messagingSenderId').value = config.messagingSenderId || '';
+    document.getElementById('appId').value = config.appId || '';
+  }
+</script>
+
+</body>
+</html>

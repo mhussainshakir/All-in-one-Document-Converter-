@@ -1,0 +1,55 @@
+{
+  "name": "All-in-One Online Document Toolkit",
+  "short_name": "Doc Toolkit",
+  "description": "Free online PDF, Image, Video, Audio tools - 100% private, no uploads",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities", "business"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "PDF Tools",
+      "short_name": "PDF",
+      "description": "Merge, split, compress PDF",
+      "url": "/pdf-tools.html"
+    },
+    {
+      "name": "PDF Editor",
+      "short_name": "Editor",
+      "description": "Edit PDF files",
+      "url": "/pdf-editor.html"
+    },
+    {
+      "name": "Popular Tools",
+      "short_name": "Popular",
+      "description": "Video, Audio, AI tools",
+      "url": "/popular-tools.html"
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service | All-in-One Online Document Toolkit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: #334155;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+    }
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand {
+      font-size: 1.2rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-links a {
+      padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
+      color: var(--text-secondary); transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text-primary); background: var(--bg-tertiary); }
+
+    .content {
+      max-width: 800px; margin: 100px auto 60px; padding: 0 24px;
+    }
+    h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 16px; }
+    h2 { font-size: 1.5rem; font-weight: 600; margin: 32px 0 16px; color: var(--accent); }
+    p { margin-bottom: 16px; color: var(--text-secondary); }
+    ul { margin: 16px 0; padding-left: 24px; }
+    li { margin-bottom: 8px; color: var(--text-secondary); }
+    
+    .last-updated {
+      color: var(--text-muted); font-size: 0.9rem; margin-bottom: 40px;
+    }
+
+    .footer {
+      border-top: 1px solid var(--border); padding: 40px 24px;
+      text-align: center; color: var(--text-muted);
+    }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+    .footer-links a { color: var(--text-secondary); font-size: 0.9rem; }
+    .footer-links a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">All-in-One Online Document Toolkit</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="pdf-tools.html">PDF Tools</a>
+    <a href="pdf-editor.html">PDF Editor</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="settings.html">Settings</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div class="content">
+  <h1>Terms of Service</h1>
+  <p class="last-updated">Last updated: February 27, 2026</p>
+
+  <h2>1. Acceptance of Terms</h2>
+  <p>By accessing and using All-in-One Online Document Toolkit ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by these terms, please do not use this Service.</p>
+
+  <h2>2. Description of Service</h2>
+  <p>All-in-One Online Document Toolkit provides free online tools for:</p>
+  <ul>
+    <li><a href="pdf-tools.html">PDF Tools</a> - Merge, split, compress, convert, watermark, protect PDFs</li>
+    <li><a href="image-tools.html">Image Tools</a> - Resize, compress, crop, convert, remove backgrounds, OCR</li>
+    <li><a href="text-tools.html">Text Tools</a> - Word counter, QR codes, barcodes, JSON formatter</li>
+    <li><a href="business-tools.html">Business Tools</a> - Invoice generator, resume builder, ZIP extractor</li>
+    <li><a href="audio-tools.html">Audio Tools</a> - Convert, trim, volume & speed control</li>
+    <li><a href="social-tools.html">Social Media Tools</a> - Instagram resizer, YouTube thumbnail</li>
+    <li><a href="calculators.html">Calculators</a> - Loan EMI, BMI, age, GST, unit converter</li>
+    <li><a href="chat.html">AI Chat</a> - Free AI assistant for writing, coding, homework help</li>
+  </ul>
+  <p>All tools operate entirely in your web browser - no files are uploaded to any server.</p>
+
+  <h2>3. Privacy & Data</h2>
+  <ul>
+    <li>All file processing happens locally in your browser</li>
+    <li>We do not collect, store, or transmit your files</li>
+    <li>We use Firebase Analytics for anonymous usage statistics only</li>
+    <li>Only theme preferences are stored locally</li>
+    <li>AI Chat processes messages to provide responses</li>
+  </ul>
+
+  <h2>4. User Responsibilities</h2>
+  <p>You agree to:</p>
+  <ul>
+    <li>Use the Service only for lawful purposes</li>
+    <li>Not attempt to reverse engineer or exploit the Service</li>
+    <li>Not upload malicious files or content</li>
+    <li>Not use automated tools to access the Service excessively</li>
+  </ul>
+
+  <h2>5. Intellectual Property</h2>
+  <p>The Service, including its design, code, and branding, is owned by Muhammad Hussain Shakir. You may not copy, modify, or distribute our work without permission.</p>
+
+  <h2>6. Updates & Changes</h2>
+  <p>We regularly update All-in-One Online Document Toolkit with new tools and features. The Service may automatically check for updates. Users have 3 days to install updates before older versions become unsupported.</p>
+
+  <h2>7. Disclaimer of Warranties</h2>
+  <p>THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. WE DO NOT GUARANTEE THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR COMPLETELY SECURE.</p>
+
+  <h2>8. Limitation of Liability</h2>
+  <p>IN NO EVENT SHALL WE BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF YOUR USE OF THE SERVICE.</p>
+
+  <h2>9. Third-Party Links</h2>
+  <p>The Service may contain links to third-party websites. We are not responsible for the content or practices of these external sites.</p>
+
+  <h2>10. AI Chat Assistant</h2>
+  <p>Our AI Chat feature helps you with questions, writing, coding, and finding tools. Users should not share sensitive personal information in chat. AI responses are generated automatically - please verify important information independently.</p>
+
+  <h2>11. Changes to Terms</h2>
+  <p>We reserve the right to modify these terms at any time. Continued use of the Service constitutes acceptance of any changes.</p>
+
+  <h2>12. Contact</h2>
+  <p>For questions about these Terms, please contact us at <a href="mailto:shakirmhussain12@gmail.com">shakirmhussain12@gmail.com</a> or <a href="https://wa.me/923448706991">WhatsApp</a></p>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+  </div>
+  <p>&copy; 2026 All-in-One Online Document Toolkit. All rights reserved.</p>
+</footer>
+
+<script>
+  // Page-specific theme loading
+  const pageThemes = JSON.parse(localStorage.getItem('eds-page-themes') || '{}');
+  const currentPage = 'terms.html';
+  const globalTheme = localStorage.getItem('eds-theme') || 'dark';
+  const pageTheme = pageThemes[currentPage];
+  const activeTheme = (pageTheme && pageTheme !== 'default') ? pageTheme : globalTheme;
+  document.documentElement.setAttribute('data-theme', activeTheme);
+</script>
+<script src="version-check.js"></script>
+
+</body>
+</html>

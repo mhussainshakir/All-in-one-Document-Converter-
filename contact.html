@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | All-in-One Online Document Toolkit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: #334155;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --success: #10b981;
+      --whatsapp: #25D366;
+    }
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand {
+      font-size: 1.2rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-links a {
+      padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
+      color: var(--text-secondary); transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text-primary); background: var(--bg-tertiary); }
+
+    .contact-container {
+      max-width: 900px; margin: 100px auto 60px; padding: 0 24px;
+    }
+    .page-header {
+      text-align: center; margin-bottom: 48px;
+    }
+    .page-header h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 12px; }
+    .page-header p { color: var(--text-secondary); font-size: 1.1rem; }
+
+    .contact-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;
+      margin-bottom: 48px;
+    }
+    .contact-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 32px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .contact-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    .contact-icon {
+      width: 72px; height: 72px; margin: 0 auto 20px;
+      border-radius: 20px; display: flex; align-items: center; justify-content: center;
+    }
+    .contact-icon svg { width: 32px; height: 32px; color: white; }
+    .contact-icon.email { background: linear-gradient(135deg, #6366f1, #818cf8); }
+    .contact-icon.whatsapp { background: linear-gradient(135deg, #25D366, #4ADE80); }
+    .contact-icon.location { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+    
+    .contact-card h3 { font-size: 1.2rem; margin-bottom: 8px; }
+    .contact-card p { color: var(--text-secondary); margin-bottom: 20px; }
+    
+    .contact-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 12px;
+      font-weight: 600; font-size: 0.95rem;
+      text-decoration: none; transition: all 0.2s;
+      cursor: pointer; border: none; font-family: inherit;
+    }
+    .contact-btn.email-btn {
+      background: var(--accent); color: white;
+    }
+    .contact-btn.email-btn:hover {
+      background: var(--accent-hover); transform: translateY(-2px);
+    }
+    .contact-btn.whatsapp-btn {
+      background: var(--whatsapp); color: white;
+    }
+    .contact-btn.whatsapp-btn:hover {
+      background: #4ADE80; transform: translateY(-2px);
+    }
+    .contact-btn svg { width: 20px; height: 20px; }
+
+    .contact-form {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 40px;
+    }
+    .contact-form h2 { font-size: 1.5rem; margin-bottom: 24px; }
+    
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block; font-size: 0.9rem; font-weight: 500;
+      margin-bottom: 8px; color: var(--text-secondary);
+    }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 14px 16px;
+      border: 1px solid var(--border); border-radius: 12px;
+      background: var(--bg-tertiary); color: var(--text-primary);
+      font-size: 1rem; font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--accent);
+    }
+    .form-group textarea { min-height: 150px; resize: vertical; }
+    
+    .submit-btn {
+      width: 100%; padding: 16px;
+      background: var(--accent); color: white;
+      border: none; border-radius: 12px;
+      font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+      font-family: inherit;
+    }
+    .submit-btn:hover {
+      background: var(--accent-hover); transform: translateY(-2px);
+    }
+
+    .response-message {
+      padding: 16px; border-radius: 12px; margin-top: 20px;
+      display: none;
+    }
+    .response-message.success {
+      display: block; background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--success); color: var(--success);
+    }
+    .response-message.error {
+      display: block; background: rgba(239, 68, 68, 0.1);
+      border: 1px solid #ef4444; color: #ef4444;
+    }
+
+    .faq-section { margin-top: 48px; }
+    .faq-section h2 { font-size: 1.5rem; margin-bottom: 24px; }
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px; margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .faq-question {
+      padding: 20px; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 600;
+    }
+    .faq-answer {
+      padding: 0 20px 20px; color: var(--text-secondary);
+      display: none;
+    }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-item.open .faq-question svg { transform: rotate(180deg); }
+
+    .footer {
+      border-top: 1px solid var(--border); padding: 40px 24px;
+      text-align: center; color: var(--text-muted);
+    }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+    .footer-links a { color: var(--text-secondary); font-size: 0.9rem; }
+    .footer-links a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">All-in-One Online Document Toolkit</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="pdf-tools.html">PDF Tools</a>
+    <a href="pdf-editor.html">PDF Editor</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" class="active">Contact</a>
+    <a href="settings.html">Settings</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div class="contact-container">
+  <div class="page-header">
+    <h1>Contact Us</h1>
+    <p>Have questions? We'd love to hear from you!</p>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="contact-icon email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <path d="M22 6l-10 7L2 6"/>
+        </svg>
+      </div>
+      <h3>Email Us</h3>
+      <p>For general inquiries and support</p>
+      <button class="contact-btn email-btn" onclick="openEmail()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <path d="M22 6l-10 7L2 6"/>
+        </svg>
+        Send Email
+      </button>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-icon whatsapp">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        WhatsApp
+      </h3>
+      <p>Quick chat for instant support</p>
+      <button class="contact-btn whatsapp-btn" onclick="openWhatsApp()">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Chat Now
+      </button>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-icon location">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <h3>Location</h3>
+      <p>Based in Pakistan</p>
+      <span style="color: var(--text-secondary); font-size: 0.9rem;">Karachi, Pakistan</span>
+    </div>
+  </div>
+
+  <div class="contact-form">
+    <h2>Send us a Message</h2>
+    <form id="contactForm" onsubmit="submitForm(event)">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="name" placeholder="Enter your name" required>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label>Subject</label>
+        <input type="text" id="subject" placeholder="What's this about?" required>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea id="message" placeholder="Write your message here..." required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send Message</button>
+      <div class="response-message" id="responseMessage"></div>
+    </form>
+  </div>
+
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>How do I use the PDF tools?</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-answer">
+        Simply select a tool from the PDF Tools page, upload your file, and the processing happens entirely in your browser. No upload needed!
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Are my files secure?</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-answer">
+        Yes! All files are processed locally in your browser. Nothing is uploaded to any server. Your files never leave your device.
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Is this service free?</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-answer">
+        Yes! All tools are completely free to use with no hidden charges, no watermarks, and no usage limits.
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>How can I report a bug?</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="faq-answer">
+        Please contact us via email or WhatsApp with details about the issue you're experiencing.
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+  </div>
+  <p>&copy; 2026 All-in-One Online Document Toolkit. All rights reserved.</p>
+</footer>
+
+<!-- Firebase SDK (Compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // Firebase Config - NEW
+  const firebaseConfig = {
+    apiKey: "AIzaSyA5hqbHcuPuev9MwmJn0ZpdYppxyljCN-E",
+    authDomain: "elite-docs-admin-28310.firebaseapp.com",
+    projectId: "elite-docs-admin-28310",
+    storageBucket: "elite-docs-admin-28310.firebasestorage.app",
+    messagingSenderId: "605421627453",
+    appId: "1:605421627453:web:f4a3c58f47baf3e6f7a254"
+  };
+
+  let db;
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    console.log('Firebase connected');
+  } catch(e) {
+    console.log('Firebase init error:', e);
+  }
+
+  // Contact info
+  const EMAIL = 'shakirmhussain12@gmail.com';
+  const WHATSAPP = '03448706991';
+
+  function openEmail() {
+    const subject = encodeURIComponent('Contact from All-in-One Online Document Toolkit');
+    const body = encodeURIComponent('Hello,\n\nI would like to inquire about...\n\nBest regards');
+    window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+  }
+
+  function openWhatsApp() {
+    const message = encodeURIComponent('Hello! I would like to inquire about All-in-One Online Document Toolkit.');
+    window.open(`https://wa.me/${WHATSAPP}?text=${message}`, '_blank');
+  }
+
+  async function submitForm(e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value;
+    const responseEl = document.getElementById('responseMessage');
+    
+    // Save to Firestore
+    if (db) {
+      try {
+        await db.collection('messages').add({
+          name: name,
+          email: email,
+          subject: subject,
+          message: message,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        responseEl.textContent = 'Thank you! Your message has been sent. We will contact you soon!';
+        responseEl.className = 'response-message success';
+      } catch(err) {
+        console.log('Error saving message:', err);
+        // Still open email as fallback
+        const body = encodeURIComponent(
+          `Name: ${name}\nEmail: ${email}\n\nSubject: ${subject}\n\nMessage:\n${message}`
+        );
+        window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${body}`;
+        responseEl.textContent = 'Thank you! Your email client should have opened. If not, please contact us directly.';
+        responseEl.className = 'response-message success';
+      }
+    } else {
+      // Fallback: open email
+      const body = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\n\nSubject: ${subject}\n\nMessage:\n${message}`
+      );
+      window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${body}`;
+      responseEl.textContent = 'Thank you! Your email client should have opened. If not, please contact us directly.';
+      responseEl.className = 'response-message success';
+    }
+    
+    document.getElementById('contactForm').reset();
+  }
+
+  function toggleFaq(el) {
+    el.parentElement.classList.toggle('open');
+  }
+
+  // Page-specific theme
+  const pageThemes = JSON.parse(localStorage.getItem('eds-page-themes') || '{}');
+  const currentPage = 'contact.html';
+  const globalTheme = localStorage.getItem('eds-theme') || 'dark';
+  const pageTheme = pageThemes[currentPage];
+  const activeTheme = (pageTheme && pageTheme !== 'default') ? pageTheme : globalTheme;
+  document.documentElement.setAttribute('data-theme', activeTheme);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+# Elite Document Suite - Robots.txt
+# https://jovial-pudding-aba321.netlify.app/
+
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /firebase-admin.html
+
+User-agent: Googlebot
+Allow: /
+Disallow: /admin.html
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin.html
+
+User-agent: Yandex
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://jovial-pudding-aba321.netlify.app/sitemap.xml
+Host: https://jovial-pudding-aba321.netlify.app

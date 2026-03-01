@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - Tips, Guides & Tools | All-in-One Online Document Toolkit</title>
+  <meta name="description" content="Free tips, guides and tutorials on PDF editing, image processing, video conversion, and more. Learn how to use our 100+ free online tools effectively.">
+  <meta name="keywords" content="blog, tips, guides, how to, PDF tutorial, image editing tips, video conversion, free tools教程">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Blog - Tips & Guides | All-in-One Online Document Toolkit">
+  <meta property="og:description" content="Learn how to use free online tools for PDF, images, video, and more.">
+  <link rel="canonical" href="blog.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    [data-theme="dark"] {
+      --bg-primary: #0f172a; --bg-secondary: #1e293b; --bg-tertiary: #334155;
+      --text-primary: #f1f5f9; --text-secondary: #94a3b8; --border: #334155;
+      --accent: #6366f1; --accent-hover: #818cf8;
+    }
+    [data-theme="light"] {
+      --bg-primary: #f8fafc; --bg-secondary: #ffffff; --bg-tertiary: #e2e8f0;
+      --text-primary: #0f172a; --text-secondary: #475569; --border: #e2e8f0;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary); color: var(--text-primary);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-hover); }
+
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+    }
+    .nav-brand {
+      font-size: 1.2rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-links a {
+      padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
+      color: var(--text-secondary); transition: all 0.2s;
+    }
+    .nav-links a:hover { color: var(--text-primary); background: var(--bg-tertiary); }
+
+    .hero {
+      padding: 120px 24px 60px; text-align: center;
+      background: radial-gradient(ellipse at 50% 0%, rgba(99,102,241,0.15) 0%, transparent 60%);
+    }
+    .hero h1 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 16px; }
+    .hero p { color: var(--text-secondary); max-width: 600px; margin: 0 auto; font-size: 1.1rem; }
+
+    .section { max-width: 1100px; margin: 0 auto; padding: 60px 24px; }
+    .section-header { text-align: center; margin-bottom: 40px; }
+    .section-header h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
+    .section-header p { color: var(--text-secondary); }
+
+    .blog-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;
+    }
+    .blog-card {
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden; transition: all 0.3s;
+    }
+    .blog-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
+    .blog-image {
+      height: 180px; background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      display: flex; align-items: center; justify-content: center; font-size: 3rem;
+    }
+    .blog-content { padding: 20px; }
+    .blog-category {
+      display: inline-block; padding: 4px 12px; border-radius: 50px;
+      background: var(--bg-tertiary); color: var(--accent);
+      font-size: 0.75rem; font-weight: 600; margin-bottom: 12px;
+    }
+    .blog-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+    .blog-desc { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 12px; }
+    .blog-meta { color: var(--text-secondary); font-size: 0.8rem; }
+
+    .footer {
+      border-top: 1px solid var(--border); padding: 40px 24px; text-align: center;
+      color: var(--text-muted);
+    }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; }
+    .footer-links a { color: var(--text-secondary); }
+    .footer-links a:hover { color: var(--accent); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .blog-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">All-in-One Online Document Toolkit</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html" class="active">Blog</a>
+    <a href="pdf-tools.html">PDF Tools</a>
+    <a href="image-tools.html">Image Tools</a>
+    <a href="chat.html">AI Chat</a>
+    <a href="about.html">About</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>📝 Free Tips & Guides</h1>
+  <p>Learn how to use our 100+ free tools effectively. Tips, tutorials, and tricks for PDF, images, video, and more.</p>
+</header>
+
+<section class="section">
+  <div class="section-header">
+    <h2>Latest Articles</h2>
+    <p>Fresh tips and tutorials</p>
+  </div>
+  <div class="blog-grid">
+    <a href="index.html" class="blog-card">
+      <div class="blog-image">📄</div>
+      <div class="blog-content">
+        <span class="blog-category">PDF</span>
+        <h3 class="blog-title">How to Merge PDFs for Free - Complete Guide</h3>
+        <p class="blog-desc">Learn how to combine multiple PDF files into one document using our free merge tool. No signup required.</p>
+        <span class="blog-meta">📅 Feb 2026 • 5 min read</span>
+      </div>
+    </a>
+    <a href="index.html" class="blog-card">
+      <div class="blog-image">🖼️</div>
+      <div class="blog-content">
+        <span class="blog-category">Image</span>
+        <h3 class="blog-title">How to Compress Images Without Losing Quality</h3>
+        <p class="blog-desc">Best free image compression techniques. Reduce file size while maintaining quality for web and social media.</p>
+        <span class="blog-meta">📅 Feb 2026 • 4 min read</span>
+      </div>
+    </a>
+    <a href="index.html" class="blog-card">
+      <div class="blog-image">🎬</div>
+      <div class="blog-content">
+        <span class="blog-category">Video</span>
+        <h3 class="blog-title">How to Convert Video to GIF Online Free</h3>
+        <p class="blog-desc">Create animated GIFs from videos in seconds. Perfect for social media and messaging apps.</p>
+        <span class="blog-meta">📅 Feb 2026 • 3 min read</span>
+      </div>
+    </a>
+    <a href="index.html" class="blog-card">
+      <div class="blog-image">🔒</div>
+      <div class="blog-content">
+        <span class="blog-category">Security</span>
+        <h3 class="blog-title">How to Password Protect PDF Files</h3>
+        <p class="blog-desc">Secure your sensitive documents with password protection. Step-by-step guide for PDF security.</p>
+        <span class="blog-meta">📅 Feb 2026 • 4 min read</span>
+      </div>
+    </a>
+    <a href="index.html" class="blog-card">
+      <div class="blog-image">🤖</div>
+      <div class="blog-content">
+        <span class="blog-category">AI</span>
+        <h3 class="blog-title">How to Use Free AI Chat for Homework & Writing</h3>
+        <p class="blog-desc">Get instant help with homework, writing, coding, and more using our free AI assistant.</p>
+        <span class="blog-meta">📅 Feb 2026 • 5 min read</span>
+      </div>
+    </a>
+    <a href="index.html" class="blog-card">
+      <div class="blog-image">📱</div>
+      <div class="blog-content">
+        <span class="blog-category">Social Media</span>
+        <h3 class="blog-title">Best Image Sizes for Instagram in 2026</h3>
+        <p class="blog-desc">Optimize your images for Instagram posts, stories, and reels. Get perfect dimensions every time.</p>
+        <span class="blog-meta">📅 Feb 2026 • 3 min read</span>
+      </div>
+    </a>
+    <a href="index.html" class="blog-card">
+      <div class="blog-image">📊</div>
+      <div class="blog-content">
+        <span class="blog-category">Business</span>
+        <h3 class="blog-title">How to Create Professional Invoices for Free</h3>
+        <p class="blog-desc">Create beautiful invoices in minutes. No Excel needed - our free invoice generator does it all.</p>
+        <span class="blog-meta">📅 Feb 2026 • 6 min read</span>
+      </div>
+    </a>
+    <a href="index.html" class="blog-card">
+      <div class="blog-image">✂️</div>
+      <div class="blog-content">
+        <span class="blog-category">Video</span>
+        <h3 class="blog-title">How to Trim Videos Online - No Software Needed</h3>
+        <p class="blog-desc">Cut unwanted parts from your videos directly in browser. Fast, free, and no installation required.</p>
+        <span class="blog-meta">📅 Feb 2026 • 4 min read</span>
+      </div>
+    </a>
+    <a href="index.html" class="blog-card">
+      <div class="blog-image">🎵</div>
+      <div class="blog-content">
+        <span class="blog-category">Audio</span>
+        <h3 class="blog-title">How to Convert Audio to MP3 Free</h3>
+        <p class="blog-desc">Convert any audio format to MP3 online. Support for WAV, OGG, AAC, FLAC and more.</p>
+        <span class="blog-meta">📅 Feb 2026 • 3 min read</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Blog</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+  <p>&copy; 2026 All-in-One Online Document Toolkit</p>
+</footer>
+
+<script>
+  // Theme loading
+  const globalTheme = localStorage.getItem('eds-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', globalTheme);
+</script>
+</body>
+</html>

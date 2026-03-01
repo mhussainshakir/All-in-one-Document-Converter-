@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editor - All-in-One Online Document Toolkit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --bg-panel: #1a2332;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: #334155;
+      --border-light: #475569;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e2e8f0;
+      --bg-panel: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border: #e2e8f0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-primary); color: var(--text-primary); }
+    a { text-decoration: none; color: inherit; }
+
+    .header-bar {
+      height: 56px; background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 16px; position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    }
+    .logo {
+      font-size: 1.1rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .header-center { display: flex; align-items: center; gap: 12px; }
+    .header-right { display: flex; align-items: center; gap: 8px; }
+
+    .toolbar-btn {
+      padding: 8px 14px; border: none; border-radius: 8px;
+      background: transparent; color: var(--text-secondary); cursor: pointer;
+      font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px;
+      font-family: inherit;
+    }
+    .toolbar-btn:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+    .toolbar-btn.active { background: var(--accent); color: white; }
+    .toolbar-btn svg { width: 18px; height: 18px; }
+
+    .primary-btn {
+      padding: 8px 20px; border: none; border-radius: 8px;
+      background: var(--accent); color: white; cursor: pointer;
+      font-size: 0.85rem; font-weight: 600;
+    }
+    .primary-btn:hover { background: var(--accent-hover); }
+
+    .main-toolbar {
+      height: 48px; background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 12px; gap: 4px;
+      position: fixed; top: 56px; left: 0; right: 0; z-index: 99;
+    }
+    .tool-group {
+      display: flex; align-items: center; gap: 2px;
+      padding: 0 8px; border-right: 1px solid var(--border);
+    }
+    .tool-group:last-child { border-right: none; }
+    .tool-btn {
+      height: 36px; padding: 0 12px; border: none; border-radius: 6px;
+      background: transparent; color: var(--text-secondary); cursor: pointer;
+      font-size: 0.8rem; font-weight: 500; display: flex; align-items: center; gap: 6px;
+      font-family: inherit;
+    }
+    .tool-btn:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+    .tool-btn.active { background: var(--accent); color: white; }
+    .tool-btn svg { width: 16px; height: 16px; }
+
+    .prop-bar {
+      height: 44px; background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      display: none; align-items: center; padding: 0 16px; gap: 10px;
+      position: fixed; top: 104px; left: 0; right: 0; z-index: 98;
+    }
+    .prop-bar.show { display: flex; }
+    .prop-select {
+      padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px;
+      background: var(--bg-tertiary); color: var(--text-primary); font-size: 0.8rem;
+    }
+    .prop-input {
+      width: 50px; padding: 6px 8px; border: 1px solid var(--border);
+      border-radius: 6px; background: var(--bg-tertiary);
+      color: var(--text-primary); font-size: 0.8rem; text-align: center;
+    }
+    .color-picker {
+      width: 30px; height: 30px; border-radius: 6px;
+      border: 2px solid var(--border); cursor: pointer; position: relative;
+    }
+    .color-picker input {
+      position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer;
+    }
+
+    .workspace {
+      position: fixed; top: 148px; left: 0; right: 0; bottom: 0;
+      background: #1a1a2e; overflow: auto; display: none;
+    }
+    .workspace.show { display: block; }
+    .canvas-area {
+      display: flex; justify-content: center; padding: 30px; min-height: 100%;
+    }
+    .doc-wrapper {
+      position: relative; background: white; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    #mainCanvas { display: block; cursor: default; }
+
+    .upload-zone {
+      position: fixed; inset: 0; background: var(--bg-primary);
+      display: flex; align-items: center; justify-content: center; z-index: 1000;
+    }
+    .upload-zone.hidden { display: none; }
+    .upload-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 600px;
+    }
+    .upload-card {
+      padding: 40px 30px; background: var(--bg-secondary);
+      border: 2px dashed var(--border); border-radius: 20px; text-align: center;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .upload-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .upload-card h3 { margin: 16px 0 8px; font-size: 1.1rem; }
+    .upload-card p { color: var(--text-secondary); font-size: 0.85rem; }
+    .upload-icon {
+      width: 60px; height: 60px; margin: 0 auto;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      border-radius: 16px; display: flex; align-items: center; justify-content: center;
+    }
+    .upload-icon svg { width: 30px; height: 30px; color: white; }
+    .file-input { display: none; }
+
+    .layers-panel {
+      position: fixed; right: 0; top: 148px; bottom: 0; width: 220px;
+      background: var(--bg-secondary); border-left: 1px solid var(--border);
+      display: none; flex-direction: column;
+    }
+    .layers-panel.show { display: flex; }
+    .layers-header {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .layers-list { flex: 1; overflow-y: auto; padding: 8px; }
+    .layer-item {
+      padding: 10px 12px; margin-bottom: 4px; border-radius: 8px;
+      background: var(--bg-tertiary); font-size: 0.8rem; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .layer-item:hover { background: var(--border); }
+    .layer-item.selected { background: var(--accent); color: white; }
+    .layer-del { margin-left: auto; color: var(--danger); cursor: pointer; }
+
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      padding: 12px 24px; background: var(--bg-secondary);
+      border: 1px solid var(--border); border-radius: 10px;
+      display: none; z-index: 3000;
+    }
+    .toast.show { display: block; }
+    .toast.success { border-color: var(--success); }
+    .toast.error { border-color: var(--danger); }
+  </style>
+</head>
+<body>
+
+<!-- Upload Zone -->
+<div class="upload-zone" id="uploadZone">
+  <div>
+    <h2 style="text-align:center;margin-bottom:30px;font-size:1.8rem;">Choose What to Edit</h2>
+    <div class="upload-grid">
+      <div class="upload-card" onclick="createBlankDoc()">
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <path d="M14 2v6h6M12 18v-6M9 15h6"/>
+          </svg>
+        </div>
+        <h3>Blank Document</h3>
+        <p>Start with a new blank page</p>
+      </div>
+      <div class="upload-card" onclick="document.getElementById('pdfInput').click()">
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <path d="M14 2v6h6"/>
+          </svg>
+        </div>
+        <h3>Upload PDF</h3>
+        <p>Edit existing PDF file</p>
+      </div>
+      <div class="upload-card" onclick="document.getElementById('imgInput').click()">
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+        </div>
+        <h3>Upload Image</h3>
+        <p>Edit photos and images</p>
+      </div>
+      <div class="upload-card" onclick="document.getElementById('multiImgInput').click()">
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+          </svg>
+        </div>
+        <h3>Multiple Images</h3>
+        <p>Edit multiple images at once</p>
+      </div>
+    </div>
+    <input type="file" id="pdfInput" class="file-input" accept="application/pdf">
+    <input type="file" id="imgInput" class="file-input" accept="image/*">
+    <input type="file" id="multiImgInput" class="file-input" accept="image/*" multiple>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="header-bar">
+  <div class="header-center">
+    <a href="index.html" class="logo">All-in-One Online Document Toolkit</a>
+    <span style="color:var(--text-muted)">/</span>
+    <span id="docTitle" style="font-weight:500;">Editor</span>
+  </div>
+  <div class="header-right">
+    <button class="toolbar-btn" onclick="undo()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/></svg>
+    </button>
+    <button class="toolbar-btn" onclick="redo()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 7v6h-6M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7"/></svg>
+    </button>
+    <button class="toolbar-btn" onclick="showLayers()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      Layers
+    </button>
+    <button class="primary-btn" onclick="downloadDoc()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Download
+    </button>
+  </div>
+</header>
+
+<!-- Main Toolbar -->
+<div class="main-toolbar">
+  <div class="tool-group">
+    <button class="tool-btn" data-tool="select" onclick="setTool('select')" title="Select & Move">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+    </button>
+    <button class="tool-btn" data-tool="textselect" onclick="setTool('textselect')" title="Select Text to Copy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+    </button>
+    <button class="tool-btn" data-tool="text" onclick="setTool('text')" title="Add Text">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+    </button>
+    <button class="tool-btn" data-tool="edit" onclick="setTool('edit')" title="Edit Existing Text">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    </button>
+  </div>
+  
+  <div class="tool-group">
+    <button class="tool-btn" data-tool="draw" onclick="setTool('draw')" title="Freehand Draw">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
+    </button>
+    <button class="tool-btn" data-tool="erase" onclick="setTool('erase')" title="Eraser">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20H7L3 16c-.8-.8-.8-2 0-2.8L13.4 2.8c.8-.8 2-.8 2.8 0L21 7.6c.8.8.8 2 0 2.8L11.8 19.6"/></svg>
+    </button>
+    <button class="tool-btn" data-tool="fill" onclick="setTool('fill')" title="Fill Tool">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 11l-8-8-8.6 8.6a2 2 0 000 2.8l5.2 5.2c.8.8 2 .8 2.8 0L19 11z"/><path d="M5 2l5 5"/><path d="M2 13h15"/><path d="M22 20.4c0 .9-.6 1.6-1.5 1.6s-1.5-.7-1.5-1.6c0-.6.4-1.1 1-1.4v-3.6c0-.9.6-1.6 1.5-1.6s1.5.7 1.5 1.6v3.4c.6.3 1 .8 1 1.4z"/></svg>
+    </button>
+  </div>
+
+  <div class="tool-group">
+    <button class="tool-btn" onclick="addImage()" title="Add Image">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+    </button>
+    <button class="tool-btn" data-tool="rect" onclick="setTool('rect')" title="Rectangle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+    </button>
+    <button class="tool-btn" data-tool="circle" onclick="setTool('circle')" title="Circle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+    </button>
+    <button class="tool-btn" data-tool="line" onclick="setTool('line')" title="Line">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="19" x2="19" y2="5"/></svg>
+    </button>
+    <button class="tool-btn" data-tool="arrow" onclick="setTool('arrow')" title="Arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+
+  <div class="tool-group">
+    <button class="tool-btn" onclick="addPage()" title="Add Page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>
+    </button>
+    <button class="tool-btn" onclick="deletePage()" title="Delete Page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+    </button>
+  </div>
+
+  <div class="tool-group">
+    <button class="tool-btn" onclick="addWatermark()" title="Add Watermark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </button>
+    <button class="tool-btn" onclick="addSignature()" title="Add Signature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+    </button>
+    <button class="tool-btn" onclick="addDate()" title="Add Date">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Properties Bar -->
+<div class="prop-bar" id="propBar">
+  <select class="prop-select" id="fontFamily" onchange="updateProp()">
+    <option value="Arial">Arial</option>
+    <option value="Helvetica">Helvetica</option>
+    <option value="Times New Roman">Times New Roman</option>
+    <option value="Courier New">Courier</option>
+    <option value="Georgia">Georgia</option>
+    <option value="Verdana">Verdana</option>
+  </select>
+  <input type="number" class="prop-input" id="fontSize" value="24" min="8" max="200" onchange="updateProp()">
+  <button class="toolbar-btn" id="boldBtn" onclick="toggleBold()" style="font-weight:bold;width:32px;">B</button>
+  <button class="toolbar-btn" id="italicBtn" onclick="toggleItalic()" style="font-style:italic;width:32px;">I</button>
+  <button class="toolbar-btn" id="underlineBtn" onclick="toggleUnderline()" style="text-decoration:underline;width:32px;">U</button>
+  <div class="color-picker" title="Color">
+    <input type="color" id="strokeColor" value="#000000" onchange="updateProp()">
+  </div>
+  <div class="color-picker" title="Fill Color" style="background:var(--bg-tertiary)">
+    <input type="color" id="fillColor" value="#ffffff" onchange="updateProp()">
+  </div>
+  <input type="number" class="prop-input" id="strokeWidth" value="2" min="1" max="50" style="width:45px" title="Size">
+  <select class="prop-select" id="dashStyle" onchange="updateProp()">
+    <option value="solid">Solid</option>
+    <option value="dashed">Dashed</option>
+    <option value="dotted">Dotted</option>
+  </select>
+</div>
+
+<!-- Workspace -->
+<div class="workspace" id="workspace">
+  <div class="canvas-area">
+    <div class="doc-wrapper" id="docWrapper">
+      <canvas id="mainCanvas"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Layers Panel -->
+<div class="layers-panel" id="layersPanel">
+  <div class="layers-header">Layers</div>
+  <div class="layers-list" id="layersList"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+let canvas, ctx;
+let currentTool = 'select';
+let elements = [], redoElements = [];
+let selectedElement = null;
+let isDrawing = false, startX, startY;
+let docWidth = 794, docHeight = 1123; // A4 at 96 DPI
+let currentPage = 1, totalPages = 1;
+let docType = 'blank'; // blank, pdf, image
+let pdfDoc = null, pdfBytes = null;
+let bgImage = null;
+
+document.addEventListener('DOMContentLoaded', init);
+
+function init() {
+  loadTheme();
+  canvas = document.getElementById('mainCanvas');
+  ctx = canvas.getContext('2d');
+  setupCanvas();
+  setupInputs();
+}
+
+function loadTheme() {
+  const theme = localStorage.getItem('eds-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+}
+
+function setupCanvas() {
+  canvas.width = docWidth;
+  canvas.height = docHeight;
+  document.getElementById('docWrapper').style.width = docWidth + 'px';
+  document.getElementById('docWrapper').style.height = docHeight + 'px';
+  
+  canvas.addEventListener('mousedown', startDraw);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', endDraw);
+  canvas.addEventListener('mouseout', endDraw);
+  
+  render();
+}
+
+function setupInputs() {
+  document.getElementById('pdfInput').addEventListener('change', e => { if(e.target.files[0]) loadPDF(e.target.files[0]); });
+  document.getElementById('imgInput').addEventListener('change', e => { if(e.target.files[0]) loadImage(e.target.files[0]); });
+  document.getElementById('multiImgInput').addEventListener('change', e => { if(e.target.files.length) loadMultipleImages(e.target.files); });
+}
+
+function createBlankDoc() {
+  docType = 'blank';
+  document.getElementById('uploadZone').classList.add('hidden');
+  document.getElementById('workspace').classList.add('show');
+  document.getElementById('docTitle').textContent = 'New Document';
+  canvas.width = docWidth;
+  canvas.height = docHeight;
+  document.getElementById('docWrapper').style.width = docWidth + 'px';
+  document.getElementById('docWrapper').style.height = docHeight + 'px';
+  render();
+}
+
+async function loadPDF(file) {
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    pdfBytes = new Uint8Array(arrayBuffer);
+    pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+    const page = pdfDoc.getPage(0);
+    const { width, height } = page.getSize();
+    
+    docType = 'pdf';
+    docWidth = width;
+    docHeight = height;
+    
+    canvas.width = docWidth;
+    canvas.height = docHeight;
+    document.getElementById('docWrapper').style.width = docWidth + 'px';
+    document.getElementById('docWrapper').style.height = docHeight + 'px';
+    
+    const loadingTask = pdfjsLib.getDocument({ data: pdfBytes.slice(0) });
+    const pdf = await loadingTask.promise;
+    const pdfPage = await pdf.getPage(1);
+    const viewport = pdfPage.getViewport({ scale: 1 });
+    
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    document.getElementById('docWrapper').style.width = viewport.width + 'px';
+    document.getElementById('docWrapper').style.height = viewport.height + 'px';
+    
+    await pdfPage.render({ canvasContext: ctx, viewport }).promise;
+    
+    bgImage = canvas.toDataURL();
+    document.getElementById('uploadZone').classList.add('hidden');
+    document.getElementById('workspace').classList.add('show');
+    document.getElementById('docTitle').textContent = file.name;
+    render();
+  } catch (err) {
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+
+function loadImage(file) {
+  const img = new Image();
+  img.onload = () => {
+    docType = 'image';
+    bgImage = img;
+    canvas.width = img.width;
+    canvas.height = img.height;
+    document.getElementById('docWrapper').style.width = img.width + 'px';
+    document.getElementById('docWrapper').style.height = img.height + 'px';
+    document.getElementById('uploadZone').classList.add('hidden');
+    document.getElementById('workspace').classList.add('show');
+    document.getElementById('docTitle').textContent = file.name;
+    render();
+  };
+  img.src = URL.createObjectURL(file);
+}
+
+function loadMultipleImages(files) {
+  let loaded = 0;
+  files.forEach((file, i) => {
+    const img = new Image();
+    img.onload = () => {
+      elements.push({
+        type: 'image', img, x: 50 + i * 20, y: 50 + i * 20,
+        width: img.width * 0.5, height: img.height * 0.5, id: Date.now() + i
+      });
+      loaded++;
+      if (loaded === files.length) {
+        docType = 'image';
+        document.getElementById('uploadZone').classList.add('hidden');
+        document.getElementById('workspace').classList.add('show');
+        document.getElementById('docTitle').textContent = 'Multiple Images';
+        render();
+      }
+    };
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+function setTool(tool) {
+  currentTool = tool;
+  document.querySelectorAll('.tool-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tool === tool);
+  });
+  
+  const propBar = document.getElementById('propBar');
+  if (['text', 'edit', 'draw', 'rect', 'circle', 'line', 'arrow', 'fill'].includes(tool)) {
+    propBar.classList.add('show');
+  } else {
+    propBar.classList.remove('show');
+  }
+  
+  if (tool === 'textselect') {
+    canvas.style.cursor = 'text';
+    enableTextSelection();
+  } else {
+    disableTextSelection();
+    canvas.style.cursor = tool === 'select' ? 'default' : tool === 'erase' ? 'cell' : 'crosshair';
+  }
+}
+
+function startDraw(e) {
+  const rect = canvas.getBoundingClientRect();
+  startX = e.clientX - rect.left;
+  startY = e.clientY - rect.top;
+  
+  if (currentTool === 'select') {
+    selectedElement = elements.slice().reverse().find(el => isInside(startX, startY, el));
+    if (selectedElement) {
+      render();
+      drawSelection();
+    }
+    return;
+  }
+  
+  if (currentTool === 'text') {
+    const text = prompt('Enter text:');
+    if (text) {
+      elements.push({
+        type: 'text', x: startX, y: startY, text,
+        font: document.getElementById('fontFamily').value,
+        size: parseInt(document.getElementById('fontSize').value),
+        color: document.getElementById('strokeColor').value,
+        bold: document.getElementById('boldBtn').classList.contains('active'),
+        italic: document.getElementById('italicBtn').classList.contains('active'),
+        underline: document.getElementById('underlineBtn').classList.contains('active'),
+        id: Date.now()
+      });
+      render();
+      updateLayers();
+    }
+    return;
+  }
+  
+  if (currentTool === 'edit') {
+    const el = elements.slice().reverse().find(el => el.type === 'text' && isInside(startX, startY, el));
+    if (el) {
+      const newText = prompt('Edit text:', el.text);
+      if (newText !== null) {
+        el.text = newText;
+        render();
+        updateLayers();
+      }
+    }
+    return;
+  }
+  
+  if (currentTool === 'erase') {
+    const el = elements.slice().reverse().find(el => isInside(startX, startY, el));
+    if (el) {
+      elements = elements.filter(e => e.id !== el.id);
+      render();
+      updateLayers();
+    }
+    return;
+  }
+  
+  isDrawing = true;
+}
+
+function draw(e) {
+  if (!isDrawing || currentTool === 'select' || currentTool === 'text' || currentTool === 'edit' || currentTool === 'erase') return;
+  
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  render();
+  
+  const color = document.getElementById('strokeColor').value;
+  const fill = document.getElementById('fillColor').value;
+  const width = parseInt(document.getElementById('strokeWidth').value);
+  
+  ctx.strokeStyle = color;
+  ctx.fillStyle = fill;
+  ctx.lineWidth = width;
+  ctx.lineCap = 'round';
+  
+  if (currentTool === 'draw') {
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  } else if (currentTool === 'rect') {
+    ctx.strokeRect(startX, startY, x - startX, y - startY);
+  } else if (currentTool === 'circle') {
+    const rx = Math.abs(x - startX) / 2;
+    const ry = Math.abs(y - startY) / 2;
+    ctx.beginPath();
+    ctx.ellipse(startX + (x - startX) / 2, startY + (y - startY) / 2, rx, ry, 0, 0, 2 * Math.PI);
+    ctx.stroke();
+  } else if (currentTool === 'line' || currentTool === 'arrow') {
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    if (currentTool === 'arrow') {
+      const angle = Math.atan2(y - startY, x - startX);
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x - 15 * Math.cos(angle - Math.PI / 6), y - 15 * Math.sin(angle - Math.PI / 6));
+      ctx.moveTo(x, y);
+      ctx.lineTo(x - 15 * Math.cos(angle + Math.PI / 6), y - 15 * Math.sin(angle + Math.PI / 6));
+      ctx.stroke();
+    }
+  } else if (currentTool === 'fill') {
+    ctx.fillRect(startX, startY, x - startX, y - startY);
+  }
+}
+
+function endDraw(e) {
+  if (!isDrawing || currentTool === 'select' || currentTool === 'text' || currentTool === 'edit') return;
+  isDrawing = false;
+  
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  const color = document.getElementById('strokeColor').value;
+  const fill = document.getElementById('fillColor').value;
+  const width = parseInt(document.getElementById('strokeWidth').value);
+  
+  let el = { type: currentTool, color, fill, width, id: Date.now() };
+  
+  if (currentTool === 'draw') {
+    el.points = [{x: startX, y: startY}, {x, y}];
+  } else if (currentTool === 'rect') {
+    el.x = startX; el.y = startY; el.w = x - startX; el.h = y - startY;
+  } else if (currentTool === 'circle') {
+    el.cx = startX + (x - startX) / 2; el.cy = startY + (y - startY) / 2;
+    el.rx = Math.abs(x - startX) / 2; el.ry = Math.abs(y - startY) / 2;
+  } else if (currentTool === 'line' || currentTool === 'arrow') {
+    el.x1 = startX; el.y1 = startY; el.x2 = x; el.y2 = y;
+  } else if (currentTool === 'fill') {
+    el.x = startX; el.y = startY; el.w = x - startX; el.h = y - startY;
+  }
+  
+  elements.push(el);
+  render();
+  updateLayers();
+}
+
+function render() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  if (bgImage) {
+    if (docType === 'image' && bgImage instanceof Image) {
+      ctx.drawImage(bgImage, 0, 0);
+    } else if (bgImage.startsWith('data:')) {
+      const img = new Image();
+      img.onload = () => ctx.drawImage(img, 0, 0);
+      img.src = bgImage;
+    }
+  } else {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+  
+  elements.forEach(el => drawElement(el));
+}
+
+function drawElement(el) {
+  ctx.strokeStyle = el.color || '#000';
+  ctx.fillStyle = el.fill || '#fff';
+  ctx.lineWidth = el.width || 2;
+  ctx.lineCap = 'round';
+  
+  if (el.type === 'text') {
+    ctx.font = `${el.italic ? 'italic ' : ''}${el.bold ? 'bold ' : ''}${el.size}px ${el.font}`;
+    ctx.fillStyle = el.color;
+    ctx.fillText(el.text, el.x, el.y);
+    if (el.underline) {
+      const w = ctx.measureText(el.text).width;
+      ctx.beginPath();
+      ctx.moveTo(el.x, el.y + 3);
+      ctx.lineTo(el.x + w, el.y + 3);
+      ctx.stroke();
+    }
+  } else if (el.type === 'image' && el.img) {
+    ctx.drawImage(el.img, el.x, el.y, el.width, el.height);
+  } else if (el.type === 'rect') {
+    ctx.strokeRect(el.x, el.y, el.w, el.h);
+  } else if (el.type === 'circle') {
+    ctx.beginPath();
+    ctx.ellipse(el.cx, el.cy, el.rx, el.ry, 0, 0, 2 * Math.PI);
+    ctx.stroke();
+  } else if (el.type === 'line') {
+    ctx.beginPath();
+    ctx.moveTo(el.x1, el.y1);
+    ctx.lineTo(el.x2, el.y2);
+    ctx.stroke();
+  } else if (el.type === 'arrow') {
+    const angle = Math.atan2(el.y2 - el.y1, el.x2 - el.x1);
+    ctx.beginPath();
+    ctx.moveTo(el.x1, el.y1);
+    ctx.lineTo(el.x2, el.y2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(el.x2, el.y2);
+    ctx.lineTo(el.x2 - 15 * Math.cos(angle - Math.PI / 6), el.y2 - 15 * Math.sin(angle - Math.PI / 6));
+    ctx.moveTo(el.x2, el.y2);
+    ctx.lineTo(el.x2 - 15 * Math.cos(angle + Math.PI / 6), el.y2 - 15 * Math.sin(angle + Math.PI / 6));
+    ctx.stroke();
+  } else if (el.type === 'fill') {
+    ctx.fillRect(el.x, el.y, el.w, el.h);
+  }
+}
+
+function drawSelection() {
+  if (!selectedElement) return;
+  const el = selectedElement;
+  ctx.setLineDash([5, 5]);
+  ctx.strokeStyle = '#6366f1';
+  ctx.lineWidth = 2;
+  
+  if (el.type === 'text') {
+    const w = ctx.measureText(el.text).width;
+    ctx.strokeRect(el.x - 5, el.y - el.size - 5, w + 10, el.size + 10);
+  } else if (el.type === 'image') {
+    ctx.strokeRect(el.x, el.y, el.width, el.height);
+  } else if (el.type === 'rect' || el.type === 'fill') {
+    ctx.strokeRect(el.x, el.y, el.w, el.h);
+  } else if (el.type === 'circle') {
+    ctx.beginPath();
+    ctx.ellipse(el.cx, el.cy, el.rx + 5, el.ry + 5, 0, 0, 2 * Math.PI);
+    ctx.stroke();
+  } else if (el.type === 'line' || el.type === 'arrow') {
+    ctx.beginPath();
+    ctx.moveTo(el.x1 - 5, el.y1 - 5);
+    ctx.lineTo(el.x2 + 5, el.y2 + 5);
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+}
+
+function isInside(x, y, el) {
+  if (el.type === 'text') {
+    const w = ctx.measureText(el.text).width;
+    return x >= el.x && x <= el.x + w && y >= el.y - el.size && y <= el.y;
+  } else if (el.type === 'image') {
+    return x >= el.x && x <= el.x + el.width && y >= el.y && y <= el.y + el.height;
+  } else if (el.type === 'rect' || el.type === 'fill') {
+    return x >= Math.min(el.x, el.x + el.w) && x <= Math.max(el.x, el.x + el.w) &&
+           y >= Math.min(el.y, el.y + el.h) && y <= Math.max(el.y, el.y + el.h);
+  }
+  return false;
+}
+
+function updateLayers() {
+  const list = document.getElementById('layersList');
+  list.innerHTML = '';
+  elements.slice().reverse().forEach((el, i) => {
+    const item = document.createElement('div');
+    item.className = 'layer-item' + (el === selectedElement ? ' selected' : '');
+    item.innerHTML = `<span>${el.type}</span><span class="layer-del" onclick="deleteLayer(${el.id})">×</span>`;
+    item.onclick = () => { selectedElement = el; render(); drawSelection(); };
+    list.appendChild(item);
+  });
+}
+
+function showLayers() {
+  document.getElementById('layersPanel').classList.toggle('show');
+  updateLayers();
+}
+
+function deleteLayer(id) {
+  elements = elements.filter(e => e.id !== id);
+  render();
+  updateLayers();
+}
+
+function addImage() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = e => {
+    if (e.target.files[0]) {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(300 / img.width, 300 / img.height);
+        elements.push({
+          type: 'image', img, x: 50, y: 50,
+          width: img.width * scale, height: img.height * scale, id: Date.now()
+        });
+        render();
+        updateLayers();
+        showToast('Image added!', 'success');
+      };
+      img.src = URL.createObjectURL(e.target.files[0]);
+    }
+  };
+  input.click();
+}
+
+function addPage() {
+  totalPages++;
+  showToast('Page added!', 'success');
+}
+
+function deletePage() {
+  if (totalPages > 1) {
+    totalPages--;
+    showToast('Page deleted!', 'success');
+  }
+}
+
+function addWatermark() {
+  const text = prompt('Enter watermark text:');
+  if (text) {
+    ctx.globalAlpha = 0.3;
+    ctx.font = '60px Arial';
+    ctx.fillStyle = '#888';
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(-Math.PI / 4);
+    ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+    ctx.restore();
+    ctx.globalAlpha = 1;
+    showToast('Watermark added!', 'success');
+  }
+}
+
+function addSignature() {
+  const name = prompt('Enter name for signature:');
+  if (name) {
+    ctx.font = 'italic 36px "Brush Script MT", cursive';
+    ctx.fillStyle = '#000';
+    ctx.fillText(name, 50, canvas.height - 100);
+    showToast('Signature added!', 'success');
+  }
+}
+
+function addDate() {
+  const date = new Date().toLocaleDateString();
+  ctx.font = '16px Arial';
+  ctx.fillStyle = '#666';
+  ctx.fillText(date, canvas.width - 150, 30);
+  showToast('Date added!', 'success');
+}
+
+function undo() {
+  if (elements.length === 0) return;
+  redoElements.push(elements.pop());
+  render();
+  updateLayers();
+}
+
+function redo() {
+  if (redoElements.length === 0) return;
+  elements.push(redoElements.pop());
+  render();
+  updateLayers();
+}
+
+function updateProp() {}
+function toggleBold() { document.getElementById('boldBtn').classList.toggle('active'); }
+function toggleItalic() { document.getElementById('italicBtn').classList.toggle('active'); }
+function toggleUnderline() { document.getElementById('underlineBtn').classList.toggle('active'); }
+
+function downloadDoc() {
+  render();
+  const link = document.createElement('a');
+  link.download = 'edited-document.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('Downloaded!', 'success');
+}
+
+let selectionBox = null;
+
+function enableTextSelection() {
+  canvas.style.pointerEvents = 'none';
+  
+  const overlay = document.createElement('div');
+  overlay.id = 'textSelectOverlay';
+  overlay.style.cssText = 'position:fixed;top:148px;left:0;right:0;bottom:0;z-index:50;cursor:text;';
+  
+  const selectionDiv = document.createElement('div');
+  selectionDiv.id = 'selectionBox';
+  selectionDiv.style.cssText = 'position:fixed;border:2px dashed #6366f1;background:rgba(99,102,241,0.1);display:none;pointer-events:none;z-index:51;';
+  document.body.appendChild(selectionDiv);
+  document.body.appendChild(overlay);
+  
+  let isSelecting = false;
+  let selStart = {x:0,y:0};
+  
+  overlay.addEventListener('mousedown', e => {
+    isSelecting = true;
+    selStart = {x: e.clientX, y: e.clientY};
+    selectionDiv.style.left = e.clientX + 'px';
+    selectionDiv.style.top = e.clientY + 'px';
+    selectionDiv.style.width = '0px';
+    selectionDiv.style.height = '0px';
+    selectionDiv.style.display = 'block';
+  });
+  
+  overlay.addEventListener('mousemove', e => {
+    if (!isSelecting) return;
+    const x = Math.min(e.clientX, selStart.x);
+    const y = Math.min(e.clientY, selStart.y);
+    const w = Math.abs(e.clientX - selStart.x);
+    const h = Math.abs(e.clientY - selStart.y);
+    selectionDiv.style.left = x + 'px';
+    selectionDiv.style.top = y + 'px';
+    selectionDiv.style.width = w + 'px';
+    selectionDiv.style.height = h + 'px';
+  });
+  
+  overlay.addEventListener('mouseup', e => {
+    if (!isSelecting) return;
+    isSelecting = false;
+    
+    const rect = {
+      x: Math.min(e.clientX, selStart.x),
+      y: Math.min(e.clientY, selStart.y) - 148,
+      width: Math.abs(e.clientX - selStart.x),
+      height: Math.abs(e.clientY - selStart.y)
+    };
+    
+    if (rect.width > 10 && rect.height > 10) {
+      extractTextFromSelection(rect);
+    }
+  });
+  
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+      copySelectedText();
+    }
+  });
+}
+
+function disableTextSelection() {
+  const overlay = document.getElementById('textSelectOverlay');
+  const selectionDiv = document.getElementById('selectionBox');
+  if (overlay) overlay.remove();
+  if (selectionDiv) selectionDiv.remove();
+  canvas.style.pointerEvents = 'auto';
+}
+
+function extractTextFromSelection(rect) {
+  if (!pdfDoc) {
+    showToast('Text extraction only works with PDF files', 'error');
+    return;
+  }
+  
+  showProgress('Extracting text...');
+  
+  (async () => {
+    try {
+      const loadingTask = pdfjsLib.getDocument({ data: pdfBytes.slice(0) });
+      const pdf = await loadingTask.promise;
+      const page = await pdf.getPage(currentPage);
+      const textContent = await page.getTextContent();
+      
+      const viewport = page.getViewport({ scale: 1 });
+      const scale = canvas.width / viewport.width;
+      
+      let extractedText = '';
+      
+      textContent.items.forEach(item => {
+        const tx = item.transform;
+        const x = tx[4] * scale;
+        const y = viewport.height * scale - tx[5] * scale;
+        const w = item.width * scale;
+        const h = item.height * scale;
+        
+        if (x + w > rect.x && x < rect.x + rect.width &&
+            y + h > rect.y && y < rect.y + rect.height) {
+          extractedText += item.str + ' ';
+        }
+      });
+      
+      if (extractedText.trim()) {
+        const selBox = document.getElementById('selectionBox');
+        if (selBox) {
+          const textPreview = extractedText.substring(0, 100) + (extractedText.length > 100 ? '...' : '');
+          selBox.innerHTML = `<div style="position:absolute;top:5px;left:5px;background:#6366f1;color:white;padding:4px 8px;border-radius:4px;font-size:12px;max-width:200px;overflow:hidden;">${textPreview}</div>
+            <button onclick="copyExtractedText(this)" style="position:absolute;top:5px;right:5px;background:#10b981;color:white;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px;">Copy</button>`;
+          selBox.style.display = 'block';
+          selBox.dataset.text = extractedText;
+        }
+      } else {
+        showToast('No text found in selection', 'error');
+      }
+      
+      hideProgress();
+    } catch (err) {
+      hideProgress();
+      showToast('Error: ' + err.message, 'error');
+    }
+  })();
+}
+
+function copyExtractedText(btn) {
+  const selBox = document.getElementById('selectionBox');
+  const text = selBox.dataset.text;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Text copied to clipboard!', 'success');
+    selBox.style.display = 'none';
+  });
+}
+
+function copySelectedText() {
+  const selBox = document.getElementById('selectionBox');
+  if (selBox && selBox.dataset.text) {
+    navigator.clipboard.writeText(selBox.dataset.text);
+    showToast('Text copied!', 'success');
+  }
+}
+
+function showProgress(msg) {
+  document.body.style.cursor = 'wait';
+  document.getElementById('toast').textContent = msg;
+  document.getElementById('toast').className = 'toast show';
+}
+
+function hideProgress() {
+  document.body.style.cursor = '';
+  document.getElementById('toast').classList.remove('show');
+}
+
+function showToast(msg, type) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast ' + type + ' show';
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

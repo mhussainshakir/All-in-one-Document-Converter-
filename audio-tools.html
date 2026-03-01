@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Tools - Converter, Trimmer, Volume, Speed | All-in-One Online Document Toolkit</title>
+  <meta name="description" content="Free online audio tools: converter, trimmer, volume changer, speed control, extract audio from video. 100% free.">
+  <meta name="keywords" content="audio converter, audio trimmer, change volume, speed audio, extract audio, mp3 converter, free audio tools">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="audio-tools.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border: #334155;
+      --accent: #8b5cf6;
+      --success: #10b981;
+    }
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border: #e2e8f0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand {
+      font-size: 1.2rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 8px; }
+    .nav-links a {
+      padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text-primary); background: var(--bg-tertiary); }
+
+    .container {
+      max-width: 900px; margin: 90px auto 40px; padding: 0 24px;
+    }
+    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+    .subtitle { color: var(--text-secondary); margin-bottom: 32px; }
+
+    .tool-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 32px;
+      margin-bottom: 24px;
+    }
+    .tool-card h2 {
+      font-size: 1.3rem; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .tool-card h2 span { font-size: 1.5rem; }
+
+    .upload-zone {
+      border: 2px dashed var(--border); border-radius: 16px;
+      padding: 48px; text-align: center; cursor: pointer;
+      transition: all 0.3s;
+    }
+    .upload-zone:hover { border-color: var(--accent); background: rgba(139, 92, 246, 0.05); }
+    .upload-zone svg { width: 48px; height: 48px; color: var(--accent); margin-bottom: 16px; }
+    .upload-zone p { color: var(--text-secondary); margin: 0; }
+    .upload-zone .hint { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; }
+
+    .player-area {
+      margin-top: 24px;
+      display: none;
+    }
+    .player-area.active { display: block; }
+    
+    audio { width: 100%; margin-top: 16px; }
+    
+    .waveform {
+      height: 80px; background: var(--bg-tertiary); border-radius: 12px;
+      margin: 16px 0;
+    }
+
+    .controls {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .control-btn {
+      padding: 12px 24px; border: 1px solid var(--border); border-radius: 10px;
+      background: var(--bg-tertiary); color: var(--text-primary);
+      font-size: 0.9rem; font-weight: 500; cursor: pointer;
+      font-family: inherit; transition: all 0.2s;
+    }
+    .control-btn:hover { border-color: var(--accent); }
+    .control-btn.primary {
+      background: var(--accent); color: white; border-color: var(--accent);
+    }
+    .control-btn.primary:hover { opacity: 0.9; }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary); }
+    .form-group input, .form-group select {
+      width: 100%; padding: 12px 16px;
+      border: 1px solid var(--border); border-radius: 10px;
+      background: var(--bg-tertiary); color: var(--text-primary);
+      font-size: 1rem; font-family: inherit;
+    }
+
+    .slider-wrap { margin: 16px 0; }
+    .slider-wrap input[type="range"] {
+      width: 100%; height: 8px; border-radius: 4px;
+      background: var(--bg-tertiary); cursor: pointer;
+    }
+    .slider-value { text-align: center; font-weight: 600; margin-top: 8px; }
+
+    .result-box {
+      margin-top: 24px; padding: 20px;
+      background: var(--bg-tertiary); border-radius: 12px;
+      text-align: center;
+    }
+    .result-box .label { font-size: 0.9rem; color: var(--text-secondary); }
+    .result-box .value { font-size: 1.5rem; font-weight: 700; color: var(--success); margin-top: 4px; }
+
+    .file-info {
+      padding: 12px 16px; background: var(--bg-tertiary); border-radius: 10px;
+      margin-bottom: 16px; font-size: 0.9rem;
+    }
+
+    input[type="file"] { display: none; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">All-in-One Online Document Toolkit</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="video-tools.html">Video Tools</a>
+    <a href="audio-tools.html" class="active">Audio Tools</a>
+    <a href="popular-tools.html">Popular</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>🎵 Free Audio Tools</h1>
+  <p class="subtitle">Convert, trim, merge and edit audio files - all in your browser.</p>
+
+  <!-- Audio Converter -->
+  <div class="tool-card">
+    <h2><span>🔄</span> Audio Converter</h2>
+    <div class="upload-zone" onclick="document.getElementById('convertInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      <p>Click to upload audio file</p>
+      <p class="hint">MP3, WAV, OGG, AAC, M4A supported</p>
+      <input type="file" id="convertInput" accept="audio/*" onchange="loadAudio(this, 'convert')">
+    </div>
+    
+    <div class="player-area" id="convertPlayer">
+      <div class="file-info" id="convertInfo"></div>
+      <audio id="convertAudio" controls></audio>
+      
+      <div class="form-group" style="margin-top: 20px;">
+        <label>Convert to</label>
+        <select id="convertFormat">
+          <option value="mp3">MP3</option>
+          <option value="wav">WAV</option>
+          <option value="ogg">OGG</option>
+        </select>
+      </div>
+      
+      <button class="control-btn primary" onclick="convertAudio()">Convert & Download</button>
+      <p style="margin-top: 12px; font-size: 0.85rem; color: var(--text-muted);">
+        Note: Browser-based conversion creates high-quality output
+      </p>
+    </div>
+  </div>
+
+  <!-- Audio Trimmer -->
+  <div class="tool-card">
+    <h2><span>✂️</span> Audio Trimmer</h2>
+    <div class="upload-zone" onclick="document.getElementById('trimInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <p>Click to upload audio to trim</p>
+      <input type="file" id="trimInput" accept="audio/*" onchange="loadAudio(this, 'trim')">
+    </div>
+    
+    <div class="player-area" id="trimPlayer">
+      <div class="file-info" id="trimInfo"></div>
+      <audio id="trimAudio" controls></audio>
+      
+      <div class="slider-wrap">
+        <label>Start Time (seconds)</label>
+        <input type="range" id="trimStart" min="0" max="60" value="0" oninput="updateTrimLabel()">
+        <div class="slider-value" id="trimStartVal">0s</div>
+      </div>
+      
+      <div class="slider-wrap">
+        <label>End Time (seconds)</label>
+        <input type="range" id="trimEnd" min="0" max="60" value="30" oninput="updateTrimLabel()">
+        <div class="slider-value" id="trimEndVal">30s</div>
+      </div>
+      
+      <button class="control-btn primary" onclick="trimAudio()">Trim & Download</button>
+    </div>
+  </div>
+
+  <!-- Audio Volume -->
+  <div class="tool-card">
+    <h2><span>🔊</span> Volume Changer</h2>
+    <div class="upload-zone" onclick="document.getElementById('volumeInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+      </svg>
+      <p>Click to upload audio</p>
+      <input type="file" id="volumeInput" accept="audio/*" onchange="loadAudio(this, 'volume')">
+    </div>
+    
+    <div class="player-area" id="volumePlayer">
+      <audio id="volumeAudio" controls></audio>
+      
+      <div class="slider-wrap">
+        <label>Volume Level</label>
+        <input type="range" id="volumeLevel" min="0" max="200" value="100" oninput="updateVolume()">
+        <div class="slider-value" id="volumeVal">100%</div>
+      </div>
+      
+      <button class="control-btn primary" onclick="downloadVolume()">Download</button>
+    </div>
+  </div>
+
+  <!-- Audio Speed -->
+  <div class="tool-card">
+    <h2><span>⚡</span> Speed Changer</h2>
+    <div class="upload-zone" onclick="document.getElementById('speedInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+      <p>Click to upload audio</p>
+      <input type="file" id="speedInput" accept="audio/*" onchange="loadAudio(this, 'speed')">
+    </div>
+    
+    <div class="player-area" id="speedPlayer">
+      <audio id="speedAudio" controls></audio>
+      
+      <div class="slider-wrap">
+        <label>Playback Speed</label>
+        <input type="range" id="speedLevel" min="50" max="200" value="100" oninput="updateSpeed()">
+        <div class="slider-value" id="speedVal">1.0x</div>
+      </div>
+      
+      <button class="control-btn primary" onclick="downloadSpeed()">Download</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentAudioData = null;
+  let currentType = '';
+
+  function loadAudio(input, type) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    currentAudioData = file;
+    currentType = type;
+    
+    const url = URL.createObjectURL(file);
+    const info = document.getElementById(type + 'Info');
+    if (info) {
+      info.innerHTML = `<strong>${file.name}</strong> - ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+    }
+    
+    const audio = document.getElementById(type + 'Audio');
+    if (audio) {
+      audio.src = url;
+      document.getElementById(type + 'Player').classList.add('active');
+      
+      audio.onloadedmetadata = function() {
+        const duration = audio.duration;
+        const endSlider = document.getElementById('trimEnd');
+        if (endSlider) {
+          endSlider.max = Math.floor(duration);
+          endSlider.value = Math.floor(duration);
+          updateTrimLabel();
+        }
+      };
+    }
+  }
+
+  function updateTrimLabel() {
+    document.getElementById('trimStartVal').textContent = document.getElementById('trimStart').value + 's';
+    document.getElementById('trimEndVal').textContent = document.getElementById('trimEnd').value + 's';
+  }
+
+  function updateVolume() {
+    const val = document.getElementById('volumeLevel').value;
+    document.getElementById('volumeVal').textContent = val + '%';
+    const audio = document.getElementById('volumeAudio');
+    if (audio) {
+      audio.volume = val / 100;
+    }
+  }
+
+  function updateSpeed() {
+    const val = document.getElementById('speedLevel').value;
+    document.getElementById('speedVal').textContent = (val / 100).toFixed(1) + 'x';
+    const audio = document.getElementById('speedAudio');
+    if (audio) {
+      audio.playbackRate = val / 100;
+    }
+  }
+
+  async function convertAudio() {
+    if (!currentAudioData) return;
+    
+    const format = document.getElementById('convertFormat').value;
+    const btn = event.target;
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+    
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const arrayBuffer = await currentAudioData.arrayBuffer();
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    
+    const offlineContext = new OfflineAudioContext(
+      audioBuffer.numberOfChannels,
+      audioBuffer.length,
+      audioBuffer.sampleRate
+    );
+    const source = offlineContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(offlineContext.destination);
+    source.start();
+    
+    const renderedBuffer = await offlineContext.startRendering();
+    
+    const wavBlob = bufferToWave(renderedBuffer, renderedBuffer.length);
+    const url = URL.createObjectURL(wavBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `converted.${format}`;
+    a.click();
+    
+    btn.textContent = 'Convert & Download';
+    btn.disabled = false;
+    if (typeof onDownloadComplete === 'function') onDownloadComplete('audio');
+  }
+
+  function bufferToWave(abuffer, len) {
+    const numOfChan = abuffer.numberOfChannels;
+    const length = len * numOfChan * 2 + 44;
+    const buffer = new ArrayBuffer(length);
+    const view = new DataView(buffer);
+    const channels = [];
+    let i;
+    let sample;
+    let offset = 0;
+    let pos = 0;
+    
+    const writeString = (view, offset, string) => {
+      for (let j = 0; j < string.length; j++) {
+        view.setUint8(offset + j, string.charCodeAt(j));
+      }
+    };
+    
+    writeString(view, pos, 'RIFF'); pos += 4;
+    view.setUint32(pos, length - 8, true); pos += 4;
+    writeString(view, pos, 'WAVE'); pos += 4;
+    writeString(view, pos, 'fmt '); pos += 4;
+    view.setUint32(pos, 16, true); pos += 4;
+    view.setUint16(pos, 1, true); pos += 2;
+    view.setUint16(pos, numOfChan, true); pos += 2;
+    view.setUint32(pos, abuffer.sampleRate, true); pos += 4;
+    view.setUint32(pos, abuffer.sampleRate * 2 * numOfChan, true); pos += 4;
+    view.setUint16(pos, numOfChan * 2, true); pos += 2;
+    view.setUint16(pos, 16, true); pos += 2;
+    writeString(view, pos, 'data'); pos += 4;
+    view.setUint32(pos, length - pos - 4, true); pos += 4;
+    
+    for (i = 0; i < abuffer.numberOfChannels; i++) {
+      channels.push(abuffer.getChannelData(i));
+    }
+    
+    while (pos < length) {
+      for (i = 0; i < numOfChan; i++) {
+        sample = Math.max(-1, Math.min(1, channels[i][offset]));
+        sample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+        view.setInt16(pos, sample, true);
+        pos += 2;
+      }
+      offset++;
+    }
+    
+    return new Blob([buffer], { type: 'audio/wav' });
+  }
+
+  async function trimAudio() {
+    if (!currentAudioData) return;
+    
+    const btn = event.target;
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+    
+    const startTime = parseFloat(document.getElementById('trimStart').value);
+    const endTime = parseFloat(document.getElementById('trimEnd').value);
+    
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const arrayBuffer = await currentAudioData.arrayBuffer();
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    
+    const sampleRate = audioBuffer.sampleRate;
+    const startSample = Math.floor(startTime * sampleRate);
+    const endSample = Math.floor(endTime * sampleRate);
+    const length = endSample - startSample;
+    
+    const offlineContext = new OfflineAudioContext(
+      audioBuffer.numberOfChannels,
+      length,
+      sampleRate
+    );
+    
+    const source = offlineContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(offlineContext.destination);
+    source.start(0, startTime, endTime - startTime);
+    
+    const renderedBuffer = await offlineContext.startRendering();
+    
+    const wavBlob = bufferToWave(renderedBuffer, renderedBuffer.length);
+    const url = URL.createObjectURL(wavBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'trimmed-audio.wav';
+    a.click();
+    
+    btn.textContent = 'Trim & Download';
+    btn.disabled = false;
+  }
+
+  async function downloadVolume() {
+    if (!currentAudioData) return;
+    
+    const btn = event.target;
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+    
+    const volume = parseFloat(document.getElementById('volumeLevel').value) / 100;
+    
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const arrayBuffer = await currentAudioData.arrayBuffer();
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    
+    const offlineContext = new OfflineAudioContext(
+      audioBuffer.numberOfChannels,
+      audioBuffer.length,
+      audioBuffer.sampleRate
+    );
+    
+    const source = offlineContext.createBufferSource();
+    source.buffer = audioBuffer;
+    
+    const gainNode = offlineContext.createGain();
+    gainNode.gain.value = volume;
+    
+    source.connect(gainNode);
+    gainNode.connect(offlineContext.destination);
+    source.start();
+    
+    const renderedBuffer = await offlineContext.startRendering();
+    
+    const wavBlob = bufferToWave(renderedBuffer, renderedBuffer.length);
+    const url = URL.createObjectURL(wavBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'volume-adjusted.wav';
+    a.click();
+    
+    btn.textContent = 'Download';
+    btn.disabled = false;
+  }
+
+  async function downloadSpeed() {
+    if (!currentAudioData) return;
+    
+    const btn = event.target;
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+    
+    const speed = parseFloat(document.getElementById('speedLevel').value) / 100;
+    
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const arrayBuffer = await currentAudioData.arrayBuffer();
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    
+    const newLength = Math.floor(audioBuffer.length / speed);
+    
+    const offlineContext = new OfflineAudioContext(
+      audioBuffer.numberOfChannels,
+      newLength,
+      audioBuffer.sampleRate
+    );
+    
+    const source = offlineContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.playbackRate.value = speed;
+    source.connect(offlineContext.destination);
+    source.start();
+    
+    const renderedBuffer = await offlineContext.startRendering();
+    
+    const wavBlob = bufferToWave(renderedBuffer, renderedBuffer.length);
+    const url = URL.createObjectURL(wavBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'speed-adjusted.wav';
+    a.click();
+    
+    btn.textContent = 'Download';
+    btn.disabled = false;
+  }
+
+  // Theme
+  const pageThemes = JSON.parse(localStorage.getItem('eds-page-themes') || '{}');
+  const globalTheme = localStorage.getItem('eds-theme') || 'dark';
+  const pageTheme = pageThemes['audio-tools.html'];
+  document.documentElement.setAttribute('data-theme', pageTheme && pageTheme !== 'default' ? pageTheme : globalTheme);
+</script>
+  <script src="version-check.js"></script>
+  <script src="simple-affiliate.js"></script>
+  <script src="affiliate-manager.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Popular Tools - All-in-One Online Document Toolkit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: #334155;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+    }
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand {
+      font-size: 1.2rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-links a {
+      padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
+      color: var(--text-secondary); transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text-primary); background: var(--bg-tertiary); }
+
+    .header {
+      padding: 120px 24px 60px;
+      text-align: center;
+      background: radial-gradient(ellipse at 50% 0%, rgba(99,102,241,0.15) 0%, transparent 60%);
+    }
+    .header h1 {
+      font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; margin-bottom: 12px;
+    }
+    .header p {
+      color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto;
+    }
+
+    .section {
+      padding: 40px 24px; max-width: 1200px; margin: 0 auto;
+    }
+    .section-title {
+      font-size: 1.5rem; font-weight: 700; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-title .icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .tools-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px;
+      margin-bottom: 48px;
+    }
+    .tool-card {
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+      transition: all 0.3s; cursor: pointer;
+    }
+    .tool-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 40px rgba(99,102,241,0.2);
+    }
+    .tool-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px; font-size: 1.5rem;
+    }
+    .tool-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; }
+    .tool-card p { font-size: 0.85rem; color: var(--text-secondary); }
+    .tool-badge {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 4px 12px;
+      background: rgba(99, 102, 241, 0.2);
+      color: var(--accent);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .tool-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--success);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .cat-video .tool-icon { background: linear-gradient(135deg, #ec4899, #f472b6); }
+    .cat-audio .tool-icon { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+    .cat-social .tool-icon { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+    .cat calc .tool-icon { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+    .cat-ai .tool-icon { background: linear-gradient(135deg, #10b981, #34d399); }
+
+    .footer {
+      border-top: 1px solid var(--border); padding: 40px 24px;
+      text-align: center; color: var(--text-muted);
+    }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+    .footer-links a { color: var(--text-secondary); font-size: 0.9rem; }
+    .footer-links a:hover { color: var(--accent); }
+
+    @media (max-width: 768px) {
+      .tools-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">All-in-One Online Document Toolkit</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="video-tools.html">Video</a>
+    <a href="audio-tools.html">Audio</a>
+    <a href="popular-tools.html" class="active">Popular</a>
+    <a href="calculators.html">Calculators</a>
+    <a href="social-tools.html">Social</a>
+    <a href="settings.html">Settings</a>
+  </div>
+</nav>
+
+<header class="header">
+  <h1>🔥 Popular Tools</h1>
+  <p>Most used online tools. Fast, free, and private - all in your browser.</p>
+</header>
+
+<main class="section">
+  <!-- Video Tools -->
+  <h2 class="section-title"><span class="icon cat-video" style="background: linear-gradient(135deg, #ec4899, #f472b6);">🎬</span>Video Tools</h2>
+  <div class="tools-grid">
+    <a href="video-tools.html" class="tool-card cat-video">
+      <div class="tool-icon">📦</div>
+      <h3>Video Compressor</h3>
+      <p>Reduce video file size without losing quality</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="video-tools.html" class="tool-card cat-video">
+      <div class="tool-icon">🔄</div>
+      <h3>Video Converter</h3>
+      <p>Convert video to MP4, AVI, MOV, WebM</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="video-tools.html" class="tool-card cat-video">
+      <div class="tool-icon">✂️</div>
+      <h3>Video Trimmer</h3>
+      <p>Cut and trim videos online</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="video-tools.html" class="tool-card cat-video">
+      <div class="tool-icon">🎞</div>
+      <h3>GIF Maker</h3>
+      <p>Create GIF from video</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="video-tools.html" class="tool-card cat-video">
+      <div class="tool-icon">⚡</div>
+      <h3>Speed Changer</h3>
+      <p>Change video speed (slow/fast)</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+  </div>
+
+  <!-- Audio Tools -->
+  <h2 class="section-title"><span class="icon cat-audio" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">🎵</span>Audio Tools</h2>
+  <div class="tools-grid">
+    <a href="audio-tools.html" class="tool-card cat-audio">
+      <div class="tool-icon">🔄</div>
+      <h3>Audio Converter</h3>
+      <p>Convert audio to MP3, WAV, AAC, OGG</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="audio-tools.html" class="tool-card cat-audio">
+      <div class="tool-icon">✂️</div>
+      <h3>Audio Trimmer</h3>
+      <p>Cut audio files online</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="audio-tools.html" class="tool-card cat-audio">
+      <div class="tool-icon">🔊</div>
+      <h3>Volume Changer</h3>
+      <p>Increase or decrease audio volume</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="audio-tools.html" class="tool-card cat-audio">
+      <div class="tool-icon">⚡</div>
+      <h3>Speed Changer</h3>
+      <p>Change audio playback speed</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+  </div>
+
+  <!-- Calculators -->
+  <h2 class="section-title"><span class="icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">🧮</span>Calculators</h2>
+  <div class="tools-grid">
+    <a href="calculators.html" class="tool-card">
+      <div class="tool-icon">🏦</div>
+      <h3>Loan Calculator</h3>
+      <p>Calculate EMI, interest, payments</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="calculators.html" class="tool-card">
+      <div class="tool-icon">⚖️</div>
+      <h3>BMI Calculator</h3>
+      <p>Calculate Body Mass Index</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="calculators.html" class="tool-card">
+      <div class="tool-icon">🎂</div>
+      <h3>Age Calculator</h3>
+      <p>Calculate age from date of birth</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="calculators.html" class="tool-card">
+      <div class="tool-icon">💰</div>
+      <h3>GST Calculator</h3>
+      <p>Calculate GST inclusive/exclusive</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="calculators.html" class="tool-card">
+      <div class="tool-icon">%</div>
+      <h3>Percentage Calculator</h3>
+      <p>Calculate percentages easily</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="calculators.html" class="tool-card">
+      <div class="tool-icon">📏</div>
+      <h3>Unit Converter</h3>
+      <p>Length, weight, temperature</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+  </div>
+
+  <!-- Social Media Tools -->
+  <h2 class="section-title"><span class="icon cat-social" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">📱</span>Social Media Tools</h2>
+  <div class="tools-grid">
+    <a href="social-tools.html" class="tool-card cat-social">
+      <div class="tool-icon">📐</div>
+      <h3>Instagram Resizer</h3>
+      <p>Perfect sizes for Instagram posts</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="social-tools.html" class="tool-card cat-social">
+      <div class="tool-icon">🖼️</div>
+      <h3>YouTube Thumbnail</h3>
+      <p>Create stunning YouTube thumbnails</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="social-tools.html" class="tool-card cat-social">
+      <div class="tool-icon">🐦</div>
+      <h3>Twitter Header</h3>
+      <p>Create Twitter profile banner</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="social-tools.html" class="tool-card cat-social">
+      <div class="tool-icon">📘</div>
+      <h3>Facebook Cover</h3>
+      <p>Facebook cover photo maker</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="social-tools.html" class="tool-card cat-social">
+      <div class="tool-icon">💼</div>
+      <h3>LinkedIn Banner</h3>
+      <p>Professional LinkedIn backgrounds</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="social-tools.html" class="tool-card cat-social">
+      <div class="tool-icon">📖</div>
+      <h3>Story Maker</h3>
+      <p>Create Instagram/Facebook stories</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+  </div>
+
+  <!-- AI Tools -->
+  <h2 class="section-title"><span class="icon cat-ai" style="background: linear-gradient(135deg, #10b981, #34d399);">🤖</span>AI & Utility Tools</h2>
+  <div class="tools-grid">
+    <a href="image-tools.html" class="tool-card cat-ai">
+      <div class="tool-icon">✨</div>
+      <h3>Background Remover</h3>
+      <p>Remove background from images</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="image-tools.html" class="tool-card cat-ai">
+      <div class="tool-icon">📝</div>
+      <h3>OCR Scanner</h3>
+      <p>Extract text from images</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="text-tools.html" class="tool-card cat-ai">
+      <div class="tool-icon">📱</div>
+      <h3>QR Code Generator</h3>
+      <p>Create QR codes from any text</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+    <a href="text-tools.html" class="tool-card cat-ai">
+      <div class="tool-icon">📊</div>
+      <h3>Barcode Generator</h3>
+      <p>Generate barcodes online</p>
+      <span class="tool-link">Try Now →</span>
+    </a>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="video-tools.html">Video Tools</a>
+    <a href="audio-tools.html">Audio Tools</a>
+    <a href="calculators.html">Calculators</a>
+    <a href="social-tools.html">Social Tools</a>
+    <a href="pdf-tools.html">PDF Tools</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <p>&copy; 2026 All-in-One Online Document Toolkit. All rights reserved.</p>
+</footer>
+
+<script>
+  // Page-specific theme loading
+  const pageThemes = JSON.parse(localStorage.getItem('eds-page-themes') || '{}');
+  const currentPage = 'popular-tools.html';
+  const globalTheme = localStorage.getItem('eds-theme') || 'dark';
+  const pageTheme = pageThemes[currentPage];
+  const activeTheme = (pageTheme && pageTheme !== 'default') ? pageTheme : globalTheme;
+  document.documentElement.setAttribute('data-theme', activeTheme);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin - Elite Document Suite</title>
+<meta name="robots" content="noindex">
+<style>
+body{font-family:system-ui;background:#0f172a;color:#fff;padding:20px}
+.box{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:24px;max-width:500px;margin:0 auto}
+input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #334155;background:#334155;color:#fff}
+button{width:100%;padding:14px;background:#6366f1;color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;margin-top:8px}
+button:hover{opacity:0.9}
+.btn2{background:#334155}
+.msg{padding:12px;margin:10px 0;border-radius:6px;text-align:center}
+.err{background:rgba(239,68,68,0.2);color:#ef4444}
+.ok{background:rgba(16,185,129,0.2);color:#10b981}
+.panel{display:none}
+h2{text-align:center;margin-bottom:20px}
+h3{margin-top:24px;margin-bottom:12px}
+label{display:block;margin:12px 0 4px}
+</style>
+</head>
+<body>
+
+<div class="box" id="loginBox">
+<h2>🔐 Owner Login</h2>
+<input type="password" id="pass" placeholder="Password: shakirmhussain01">
+<button onclick="login()">Login</button>
+<div class="msg err" id="err" style="display:none"></div>
+</div>
+
+<div class="box panel" id="panel">
+<h2>💰 Affiliate Links</h2>
+<input type="url" id="affPdf" placeholder="PDF Affiliate URL">
+<input type="url" id="affImg" placeholder="Image Affiliate URL">
+<input type="url" id="affBiz" placeholder="Business Affiliate URL">
+<input type="url" id="affGen" placeholder="General Affiliate URL">
+<button onclick="save()">Save to Firebase</button>
+<div class="msg ok" id="ok" style="display:none"></div>
+
+<h3>📊 Analytics</h3>
+<input type="text" id="analytics" placeholder="G-XXXXXXXXXX">
+<button onclick="saveAnalytics()">Save</button>
+
+<h3>📬 Messages</h3>
+<div id="msgs"></div>
+<button class="btn2" onclick="loadMsgs()">Refresh</button>
+
+<h3>🔒 Security Logs</h3>
+<div id="logs"></div>
+
+<button onclick="logout()" style="margin-top:24px;background:#ef4444">Logout</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA5hqbHcuPuev9MwmJn0ZpdYppxyljCN-E",
+  authDomain: "elite-docs-admin-28310.firebaseapp.com",
+  projectId: "elite-docs-admin-28310",
+  storageBucket: "elite-docs-admin-28310.firebasestorage.app",
+  messagingSenderId: "605421627453",
+  appId: "1:605421627453:web:f4a3c58f47baf3e6f7a254"
+};
+
+let db;
+try{
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  console.log('✓ Firebase connected');
+}catch(e){
+  console.log('Firebase error:',e);
+}
+
+function login(){
+  const p = document.getElementById('pass').value;
+  if(p === 'shakirmhussain01'){
+    document.getElementById('loginBox').style.display='none';
+    document.getElementById('panel').style.display='block';
+    loadData();
+    addLog('OWNER_LOGIN', 'Owner logged in');
+  }else{
+    document.getElementById('err').textContent='Wrong password';
+    document.getElementById('err').style.display='block';
+  }
+}
+
+function loadData(){
+  if(!db)return;
+  db.collection('settings').doc('appSettings').get().then(d=>{
+    if(d.exists){
+      const a = d.data().affiliate||{};
+      document.getElementById('affPdf').value=a.pdf||'';
+      document.getElementById('affImg').value=a.image||'';
+      document.getElementById('affBiz').value=a.business||'';
+      document.getElementById('affGen').value=a.general||'';
+      document.getElementById('analytics').value=d.data().analytics||'';
+    }
+  });
+  loadMsgs();
+  loadLogs();
+}
+
+function save(){
+  if(!db)return alert('Firebase not connected!');
+  const aff={
+    pdf:document.getElementById('affPdf').value,
+    image:document.getElementById('affImg').value,
+    business:document.getElementById('affBiz').value,
+    general:document.getElementById('affGen').value
+  };
+  db.collection('settings').doc('appSettings').set({affiliate:aff,updated:new Date().toISOString()},{merge:true})
+  .then(()=>{
+    document.getElementById('ok').textContent='✓ Saved to Firebase!';
+    document.getElementById('ok').style.display='block';
+    addLog('SETTINGS', 'Affiliate links saved');
+  }).catch(e=>alert('Error: '+e));
+}
+
+function saveAnalytics(){
+  if(!db)return;
+  db.collection('settings').doc('appSettings').set({analytics:document.getElementById('analytics').value},{merge:true})
+  .then(()=>{alert('✓ Saved!'); addLog('SETTINGS', 'Analytics saved');})
+  .catch(e=>alert('Error: '+e));
+}
+
+function loadMsgs(){
+  if(!db)return;
+  db.collection('messages').orderBy('createdAt','desc').limit(10).get().then(s=>{
+    let h='';
+    s.forEach(d=>{
+      const m=d.data();
+      const date=m.createdAt?new Date(m.createdAt.seconds*1000).toLocaleDateString():'';
+      h+=`<div style="padding:10px;background:#334155;margin:4px 0;border-radius:6px"><b>${m.name||'Anon'}</b> <small>${date}</small><br>${m.message||''}</div>`;
+    });
+    document.getElementById('msgs').innerHTML=h||'<p style="color:#94a3b8">No messages</p>';
+  });
+}
+
+function loadLogs(){
+  const logs=JSON.parse(localStorage.getItem('eds_logs')||'[]');
+  let h='';
+  logs.slice(0,10).forEach(l=>{
+    h+=`<div style="padding:6px;border-bottom:1px solid #334155;font-size:12px;color:#94a3b8"><b>${l.action}</b> - ${l.details}</div>`;
+  });
+  document.getElementById('logs').innerHTML=h||'<p style="color:#94a3b8">No logs</p>';
+}
+
+function addLog(action, details){
+  const logs=JSON.parse(localStorage.getItem('eds_logs')||'[]');
+  logs.unshift({action,details,time:new Date().toISOString()});
+  if(logs.length>20)logs.pop();
+  localStorage.setItem('eds_logs',JSON.stringify(logs));
+}
+
+function logout(){
+  addLog('LOGOUT', 'Owner logged out');
+  location.reload();
+}
+
+console.log('Admin Panel Loaded');
+</script>
+</body>
+</html>

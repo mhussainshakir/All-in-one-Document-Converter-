@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Test Affiliate</title>
+<style>
+body{font-family:system-ui;background:#0f172a;color:#fff;padding:40px;text-align:center}
+.btn{padding:20px 40px;background:#6366f1;color:#fff;border:none;border-radius:12px;font-size:20px;cursor:pointer;margin:20px}
+.btn:hover{background:#818cf8}
+.info{background:#1e293b;padding:20px;border-radius:12px;margin:20px}
+</style>
+</head>
+<body>
+
+<h1>Test Affiliate Links</h1>
+
+<div class="info">
+<h3>Current Links:</h3>
+<div id="links">Loading...</div>
+</div>
+
+<button class="btn" onclick="showPopup()">Show Popup</button>
+
+<script>
+// AFFILIATE SYSTEM
+let affiliateLinks = { pdf: '', image: '', business: '', general: '' };
+
+async function loadLinks() {
+  try {
+    // Wait for firebase
+    for(let i=0; i<20 && typeof firebase === 'undefined'; i++) {
+      await new Promise(r => setTimeout(r, 100));
+    }
+    
+    if (typeof firebase === 'undefined') {
+      document.getElementById('links').innerHTML = 'Firebase not loaded';
+      return;
+    }
+    
+    const app = firebase.initializeApp({
+      apiKey: "AIzaSyA5hqbHcuPuev9MwmJn0ZpdYppxyljCN-E",
+      authDomain: "elite-docs-admin-28310.firebaseapp.com",
+      projectId: "elite-docs-admin-28310",
+      storageBucket: "elite-docs-admin-28310.firebasestorage.app",
+      messagingSenderId: "605421627453",
+      appId: "1:605421627453:web:f4a3c58f47baf3e6f7a254"
+    });
+    
+    const db = firebase.firestore(app);
+    const doc = await db.collection('settings').doc('appSettings').get();
+    
+    if (doc.exists && doc.data().affiliate) {
+      const a = doc.data().affiliate;
+      affiliateLinks = {
+        pdf: a.pdf || '',
+        image: a.image || '',
+        business: a.business || '',
+        general: a.general || ''
+      };
+    }
+    
+    document.getElementById('links').innerHTML = `
+      PDF: ${affiliateLinks.pdf || 'Not set'}<br>
+      Image: ${affiliateLinks.image || 'Not set'}<br>
+      Business: ${affiliateLinks.business || 'Not set'}<br>
+      General: ${affiliateLinks.general || 'Not set'}
+    `;
+    
+    console.log('Loaded:', affiliateLinks);
+  } catch(e) {
+    document.getElementById('links').innerHTML = 'Error: ' + e.message;
+  }
+}
+
+function showPopup() {
+  const link = affiliateLinks.general || affiliateLinks.pdf || 'https://google.com';
+  
+  const popup = document.createElement('div');
+  popup.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:99999;display:flex;align-items:center;justify-content:center;';
+  popup.innerHTML = `
+    <div style="background:#1e293b;border-radius:20px;padding:40px;max-width:450px;text-align:center;">
+      <div style="font-size:60px;margin-bottom:20px;">🎉</div>
+      <h2 style="color:#fff;margin-bottom:16px;">Processing Complete!</h2>
+      <p style="color:#94a3b8;margin-bottom:24px;">Check out related software below.</p>
+      <a href="${link}" target="_blank" style="display:block;padding:18px;background:#6366f1;color:#fff;text-decoration:none;border-radius:12px;font-weight:600;font-size:18px;margin-bottom:16px;">
+        📥 Download Related Software
+      </a>
+      <button onclick="this.closest('div').parentElement.remove()" style="width:100%;padding:14px;background:transparent;border:1px solid #475569;color:#94a3b8;border-radius:12px;cursor:pointer;">
+        ✕ Close
+      </button>
+    </div>
+  `;
+  document.body.appendChild(popup);
+}
+
+loadLinks();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings | All-in-One Online Document Toolkit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: #334155;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border: #e2e8f0;
+    }
+    [data-theme="rose"] {
+      --bg-primary: #1a0a0f;
+      --bg-secondary: #2a1219;
+      --bg-tertiary: #3d1a23;
+      --text-primary: #ffe4e6;
+      --text-secondary: #fda4af;
+      --border: #3d1a23;
+      --accent: #f43f5e;
+      --accent-hover: #fb7185;
+    }
+    [data-theme="ocean"] {
+      --bg-primary: #0c1929;
+      --bg-secondary: #132f4c;
+      --bg-tertiary: #1e4976;
+      --text-primary: #e3f2fd;
+      --text-secondary: #90caf9;
+      --border: #1e4976;
+      --accent: #29b6f6;
+    }
+    [data-theme="forest"] {
+      --bg-primary: #0a1f0a;
+      --bg-secondary: #132516;
+      --bg-tertiary: #1e3a1e;
+      --text-primary: #dcfce7;
+      --text-secondary: #86efac;
+      --border: #1e3a1e;
+      --accent: #22c55e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand {
+      font-size: 1.2rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-links a {
+      padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
+      color: var(--text-secondary); transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text-primary); background: var(--bg-tertiary); }
+
+    .settings-container {
+      max-width: 700px; margin: 90px auto 40px; padding: 0 24px;
+    }
+    .settings-header {
+      margin-bottom: 32px;
+    }
+    .settings-header h1 {
+      font-size: 2rem; font-weight: 700; margin-bottom: 8px;
+    }
+    .settings-header p {
+      color: var(--text-secondary);
+    }
+
+    .settings-section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-size: 1.1rem; font-weight: 600; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .theme-select-wrap {
+      margin-bottom: 16px;
+    }
+    .theme-select-wrap label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .theme-select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .theme-select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .color-preview {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .color-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .color-dot:hover {
+      transform: scale(1.1);
+    }
+    .color-dot.active {
+      border-color: var(--text-primary);
+    }
+
+    .save-btn {
+      padding: 16px 32px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem; font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+      width: 100%;
+      margin-top: 24px;
+    }
+    .save-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .success-msg {
+      padding: 12px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--success);
+      border-radius: 8px;
+      color: var(--success);
+      text-align: center;
+      margin-top: 16px;
+      display: none;
+    }
+    .success-msg.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">All-in-One Online Document Toolkit</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="settings.html" class="active">Settings</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<div class="settings-container">
+  <div class="settings-header">
+    <h1>⚙️ Settings</h1>
+    <p>Select theme for each page of the application.</p>
+  </div>
+
+  <div class="settings-section">
+    <div class="section-title">🎨 Page Themes</div>
+    <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 0.9rem;">
+      Choose a theme for each page. Select "Default (Dark)" to use the default dark theme.
+    </p>
+
+    <div class="theme-select-wrap">
+      <label>Home Page</label>
+      <select class="theme-select" id="theme-index">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>PDF Tools Page</label>
+      <select class="theme-select" id="theme-pdf-tools">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>PDF Editor Page</label>
+      <select class="theme-select" id="theme-pdf-editor">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>Image Tools Page</label>
+      <select class="theme-select" id="theme-image-tools">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>Text Tools Page</label>
+      <select class="theme-select" id="theme-text-tools">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>Business Tools Page</label>
+      <select class="theme-select" id="theme-business-tools">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>Video Tools Page</label>
+      <select class="theme-select" id="theme-video-tools">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>Audio Tools Page</label>
+      <select class="theme-select" id="theme-audio-tools">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>Calculators Page</label>
+      <select class="theme-select" id="theme-calculators">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>Social Tools Page</label>
+      <select class="theme-select" id="theme-social-tools">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>Popular Tools Page</label>
+      <select class="theme-select" id="theme-popular-tools">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>Settings Page</label>
+      <select class="theme-select" id="theme-settings">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>Chat Page (AI Assistant)</label>
+      <select class="theme-select" id="theme-chat">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <div class="theme-select-wrap">
+      <label>Other Pages (Contact, Terms, Privacy, About)</label>
+      <select class="theme-select" id="theme-other">
+        <option value="dark">Default (Dark)</option>
+        <option value="light">Light</option>
+        <option value="rose">Rose (Pink)</option>
+        <option value="ocean">Ocean (Blue)</option>
+        <option value="forest">Forest (Green)</option>
+        <option value="sunset">Sunset (Orange)</option>
+        <option value="royal">Royal (Purple)</option>
+        <option value="midnight">Midnight</option>
+        <option value="emerald">Emerald</option>
+        <option value="amber">Amber</option>
+      </select>
+    </div>
+
+    <button class="save-btn" onclick="saveSettings()">Save All Settings</button>
+    <div class="success-msg" id="successMsg">✓ Settings saved successfully!</div>
+  </div>
+</div>
+
+<script>
+  // Page theme mapping
+  const pageThemeMap = {
+    'theme-index': 'index.html',
+    'theme-pdf-tools': 'pdf-tools.html',
+    'theme-pdf-editor': 'pdf-editor.html',
+    'theme-image-tools': 'image-tools.html',
+    'theme-text-tools': 'text-tools.html',
+    'theme-business-tools': 'business-tools.html',
+    'theme-video-tools': 'video-tools.html',
+    'theme-audio-tools': 'audio-tools.html',
+    'theme-calculators': 'calculators.html',
+    'theme-social-tools': 'social-tools.html',
+    'theme-popular-tools': 'popular-tools.html',
+    'theme-settings': 'settings.html',
+    'theme-chat': 'chat.html',
+    'theme-contact': 'contact.html',
+    'theme-terms': 'terms.html',
+    'theme-privacy': 'privacy.html',
+    'theme-about': 'about.html'
+  };
+
+  const otherPages = ['contact.html', 'terms.html', 'privacy.html', 'about.html'];
+
+  function loadSettings() {
+    const pageThemes = JSON.parse(localStorage.getItem('eds-page-themes') || '{}');
+    
+    // Load individual page themes
+    Object.keys(pageThemeMap).forEach(selectId => {
+      const page = pageThemeMap[selectId];
+      const selectEl = document.getElementById(selectId);
+      if (selectEl && pageThemes[page]) {
+        selectEl.value = pageThemes[page];
+      }
+    });
+    
+    // Load "other" pages
+    const otherTheme = pageThemes['contact.html'] || pageThemes['terms.html'] || pageThemes['privacy.html'] || pageThemes['about.html'] || 'dark';
+    document.getElementById('theme-other').value = otherTheme;
+  }
+
+  function saveSettings() {
+    const pageThemes = {};
+    
+    // Save individual page themes
+    Object.keys(pageThemeMap).forEach(selectId => {
+      const selectEl = document.getElementById(selectId);
+      const page = pageThemeMap[selectId];
+      if (selectEl && selectEl.value !== 'dark') {
+        pageThemes[page] = selectEl.value;
+      }
+    });
+    
+    // Save "other" pages
+    const otherTheme = document.getElementById('theme-other').value;
+    if (otherTheme !== 'dark') {
+      otherPages.forEach(page => {
+        pageThemes[page] = otherTheme;
+      });
+    }
+    
+    localStorage.setItem('eds-page-themes', JSON.stringify(pageThemes));
+    localStorage.setItem('eds-theme', 'dark');
+    
+    // Show success message
+    const msg = document.getElementById('successMsg');
+    msg.classList.add('show');
+    setTimeout(() => msg.classList.remove('show'), 3000);
+    
+    // Apply theme to current page
+    const currentTheme = pageThemes['settings.html'] || 'dark';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+  }
+
+  // Load settings on page load
+  loadSettings();
+</script>
+
+</body>
+</html>
