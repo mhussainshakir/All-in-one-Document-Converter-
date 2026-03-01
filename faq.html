@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ | All-in-One Online Document Toolkit</title>
+  <meta name="description" content="Frequently Asked Questions about All-in-One Online Document Toolkit - Free PDF, Image, Text & Business Tools + AI Chat">
+  <link rel="canonical" href="faq.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    [data-theme="dark"] {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: #334155;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #4f46e5;
+      --accent-hover: #6366f1;
+      --shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { text-decoration: none; color: inherit; }
+    
+    /* Navbar */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand {
+      font-size: 1.1rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 16px; }
+    .nav-links a {
+      padding: 8px 14px; border-radius: 8px;
+      color: var(--text-secondary); font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover { color: var(--text-primary); background: var(--bg-tertiary); }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--text-primary); padding: 8px; }
+    .nav-toggle svg { width: 24px; height: 24px; }
+
+    /* Main Content */
+    .main-content {
+      padding: 100px 24px 60px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .page-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .page-header h1 {
+      font-size: 2.5rem; font-weight: 800; margin-bottom: 12px;
+    }
+    .page-header p {
+      color: var(--text-secondary); font-size: 1.1rem;
+    }
+
+    /* FAQ Item */
+    .faq-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .faq-question {
+      padding: 20px 24px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600; font-size: 1.05rem;
+      transition: background 0.2s;
+    }
+    .faq-question:hover {
+      background: var(--bg-tertiary);
+    }
+    .faq-question::after {
+      content: '+';
+      font-size: 1.5rem;
+      color: var(--accent);
+      transition: transform 0.3s;
+    }
+    .faq-item.open .faq-question::after {
+      transform: rotate(45deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 500px;
+      padding: 0 24px 20px;
+    }
+    .faq-answer p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      margin-top: 48px;
+    }
+    .contact-section h3 {
+      font-size: 1.3rem; margin-bottom: 12px;
+    }
+    .contact-section p {
+      color: var(--text-secondary); margin-bottom: 20px;
+    }
+    .contact-btn {
+      display: inline-block;
+      padding: 12px 28px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .contact-btn:hover { background: var(--accent-hover); }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--text-muted);
+      margin-top: 60px;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: block; }
+      .main-content { padding: 80px 16px 40px; }
+      .page-header h1 { font-size: 1.8rem; }
+      .faq-question { padding: 16px; font-size: 1rem; }
+      .faq-item.open .faq-answer { padding: 0 16px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">All-in-One Online Document Toolkit</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="pdf-tools.html">PDF Tools</a>
+      <a href="image-tools.html">Image</a>
+      <a href="chat.html">AI Chat</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <button class="nav-toggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 12h18M3 6h18M3 18h18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h1>Frequently Asked Questions</h1>
+      <p>Find answers to common questions about our tools</p>
+    </div>
+
+    <!-- General -->
+    <h2 style="margin-bottom: 16px; font-size: 1.3rem;">General</h2>
+    
+    <div class="faq-item">
+      <div class="faq-question">What is All-in-One Online Document Toolkit?</div>
+      <div class="faq-answer">
+        <p>All-in-One Online Document Toolkit is a free collection of 100+ online tools for working with PDFs, images, text, audio, video, and business documents. It also includes a free AI Chat assistant powered by Groq. All tools run entirely in your browser - your files never leave your device.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Is it really free? Are there any hidden charges?</div>
+      <div class="faq-answer">
+        <p>Yes, completely free! All 100+ tools are free to use with no hidden charges, no watermarks, and no usage limits. You don't need to create an account or subscribe to any plan.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Do I need to install any software?</div>
+      <div class="faq-answer">
+        <p>No installation required! All tools work directly in your web browser. Just open the website and start using any tool immediately. Works on Chrome, Firefox, Safari, Edge, and other modern browsers.</p>
+      </div>
+    </div>
+
+    <!-- Privacy & Security -->
+    <h2 style="margin: 32px 0 16px; font-size: 1.3rem;">Privacy & Security</h2>
+
+    <div class="faq-item">
+      <div class="faq-question">Are my files uploaded to a server?</div>
+      <div class="faq-answer">
+        <p>No! All file processing happens locally in your browser using JavaScript. Your files are never uploaded to any server. This makes our tools one of the most private options available online. Your data stays on your device.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Is my data safe?</div>
+      <div class="faq-answer">
+        <p>Absolutely. Since files are processed locally in your browser, there's no risk of your documents being stored or accessed by anyone else. We cannot see or access your files at all.</p>
+      </div>
+    </div>
+
+    <!-- AI Chat -->
+    <h2 style="margin: 32px 0 16px; font-size: 1.3rem;">AI Chat</h2>
+
+    <div class="faq-item">
+      <div class="faq-question">How does the AI Chat work?</div>
+      <div class="faq-answer">
+        <p>Our AI Chat is powered by Groq's LPU inference engine, providing fast and intelligent responses. You can ask questions, get help with writing, coding, analysis, homework help, and much more - completely free!</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Is the AI Chat free to use?</div>
+      <div class="faq-answer">
+        <p>Yes, the AI Chat is completely free with no limits. You can have unlimited conversations with the AI assistant at no cost.</p>
+      </div>
+    </div>
+
+    <!-- Tools -->
+    <h2 style="margin: 32px 0 16px; font-size: 1.3rem;">Tools & Usage</h2>
+
+    <div class="faq-item">
+      <div class="faq-question">What types of tools are available?</div>
+      <div class="faq-answer">
+        <p>We offer 100+ tools across categories: PDF Tools (merge, split, compress, convert), Image Tools (resize, crop, convert, compress), Audio Tools (convert, trim, merge), Video Tools, Text Tools (QR generator, password generator, formatters), Business Tools (invoice, resume, signatures), Social Media Tools, and Calculators.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">What file formats are supported?</div>
+      <div class="faq-answer">
+        <p>PDF tools support PDF, DOCX, XLSX, PPTX, and images. Image tools support JPG, PNG, WebP, GIF, BMP, SVG. Audio tools support MP3, WAV, OGG, AAC, FLAC. Video tools support MP4, MOV, AVI, WebM, and more.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Is there a file size limit?</div>
+      <div class="faq-answer">
+        <p>Most tools work with files up to 50MB. Since files are processed in your browser, larger files may take longer to process depending on your device's capabilities.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">What happens if the tool doesn't work?</div>
+      <div class="faq-answer">
+        <p>Since all processing happens in your browser, some tools may have limitations based on browser support. For best results, use a modern browser like Chrome, Firefox, or Edge. If a tool isn't working, try refreshing the page or clearing your browser cache.</p>
+      </div>
+    </div>
+
+    <!-- Technical -->
+    <h2 style="margin: 32px 0 16px; font-size: 1.3rem;">Technical</h2>
+
+    <div class="faq-item">
+      <div class="faq-question">Which browsers are supported?</div>
+      <div class="faq-answer">
+        <p>All tools work best in modern browsers: Chrome (recommended), Firefox, Safari, Edge, and Opera. Some features require JavaScript to be enabled.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Can I use this on my phone?</div>
+      <div class="faq-answer">
+        <p>Yes! The website is fully mobile-responsive and works on smartphones and tablets. Many tools also support camera input on mobile devices for scanning documents or capturing images.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Do you offer API access?</div>
+      <div class="faq-answer">
+        <p>Currently, we don't offer API access. All tools are available through our web interface only. Check our blog or social media for future updates.</p>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="contact-section">
+      <h3>Still have questions?</h3>
+      <p>If you couldn't find the answer you're looking for, feel free to contact us.</p>
+      <a href="contact.html" class="contact-btn">Contact Us</a>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <p>&copy; 2026 All-in-One Online Document Toolkit</p>
+  </footer>
+
+  <script>
+    // FAQ Toggle
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const item = question.parentElement;
+        item.classList.toggle('open');
+      });
+    });
+
+    // Load theme
+    const savedTheme = localStorage.getItem('eds-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+</body>
+</html>
